@@ -1,18 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
+import { useAuthStore } from "@/store/auth/authStore";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/firebaseConfig";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { setUser } = useAuthStore();
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("savedEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log("Login attempt", { email, password, rememberMe });
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      const accessToken = await user.getIdToken();
+
+      setUser(user, accessToken);
+
+      if (rememberMe) {
+        localStorage.setItem("savedEmail", email);
+      } else {
+        localStorage.removeItem("savedEmail");
+      }
+
+      console.log("로그인 완료", { email, rememberMe });
+      alert("로그인이 완료되었습니다. 홈으로 이동합니다");
+    } catch (error) {
+      console.error("로그인 실패", error);
+      alert("로그인에 실패했습니다.");
+    }
   };
 
   return (

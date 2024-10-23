@@ -4,6 +4,10 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Button from "@/components/ui/Button";
+import { useAuthStore } from "@/store/auth/authStore";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { auth, db } from "@/firebase/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function SignupPage() {
   const [name, setName] = useState("");
@@ -15,18 +19,47 @@ export default function SignupPage() {
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { setUser } = useAuthStore();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup logic here
-    console.log("Signup attempt", {
-      name,
-      email,
-      password,
-      confirmPassword,
-      nickname,
-      birthdate,
-      profileImage,
-    });
+
+    if (password !== confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+
+      await updateProfile(user, { displayName: name });
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        name,
+        email,
+        nickname,
+        birthdate,
+        profileImage,
+      });
+
+      const accessToken = await user.getIdToken();
+
+      setUser(user, accessToken);
+
+      console.log("회원가입 완료", user);
+      alert(
+        `${name}님, 회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.`
+      );
+    } catch (error) {
+      console.error("에러 발생", error);
+      alert("회원가입에 실패했습니다.");
+    }
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,8 +81,9 @@ export default function SignupPage() {
           <div className="flex items-center space-x-6">
             <div className="shrink-0">
               <div
-                className="h-24 w-24 rounded-full bg-sub flex items-center justify-center cursor-pointer"
+                className="h-24 w-24 rounded-full bg-sub flex items-center justify-center cursor-pointer overflow-hidden"
                 onClick={() => fileInputRef.current?.click()}
+                style={{ width: "96px", height: "96px" }}
               >
                 {profileImage ? (
                   <Image
@@ -57,7 +91,7 @@ export default function SignupPage() {
                     alt="Profile"
                     width={96}
                     height={96}
-                    className="rounded-full"
+                    className="rounded-full object-cover"
                   />
                 ) : (
                   <span className="text-font_btn text-sm">프로필사진</span>
