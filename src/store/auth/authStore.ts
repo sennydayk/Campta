@@ -1,28 +1,75 @@
+import Cookies from "js-cookie";
 import { create } from "zustand";
 import { auth } from "@/firebase/firebaseConfig";
-import { User, onAuthStateChanged } from "firebase/auth";
-import { AuthState } from "./types";
+import { onAuthStateChanged } from "firebase/auth";
 
-export const useAuthStore = create<AuthState>((set) => ({
+interface IUser {
+  uid: string;
+  email: string;
+  nickName: string;
+}
+
+interface AuthStore {
+  isLogin: boolean;
+  user: IUser | null;
+  accessToken: string | null;
+  setUser: (user: IUser) => void;
+  setAccessToken: (token: string) => void;
+  checkLoginStatus: () => void;
+  logout: () => void;
+}
+
+export const useAuthStore = create<AuthStore>((set) => ({
+  isLogin: !!Cookies.get("accessToken"),
   user: null,
-  accessToken: null,
-  isAuthenticated: false,
+  accessToken: Cookies.get("accessToken") || null,
 
-  setUser: (user: User | null, token: string | null) =>
+  setUser: (user: IUser) => {
+    set({ user, isLogin: true });
+  },
+
+  setAccessToken: (token: string) => {
+    Cookies.set("accessToken", token, { expires: 7 });
+    set({ accessToken: token, isLogin: true });
+  },
+
+  checkLoginStatus: () => {
+    const token = Cookies.get("accessToken");
+    if (token) {
+      set({ isLogin: true, accessToken: token });
+      onAuthStateChanged(auth, (currentUser) => {
+        if (currentUser) {
+          set({
+            user: {
+              uid: currentUser.uid,
+              email: currentUser.email || "",
+              nickName: currentUser.displayName || "",
+            },
+            isLogin: true,
+          });
+        } else {
+          set({
+            user: null,
+            isLogin: false,
+            accessToken: null,
+          });
+          Cookies.remove("accessToken");
+        }
+      });
+    } else {
+      set({ isLogin: false, user: null, accessToken: null });
+    }
+  },
+
+  logout: () => {
+    Cookies.remove("accessToken");
     set({
-      user,
-      accessToken: token,
-      isAuthenticated: !!user,
-    }),
-
-  logout: () => set({ user: null, accessToken: null, isAuthenticated: false }),
+      isLogin: false,
+      user: null,
+      accessToken: null,
+    });
+    auth.signOut();
+  },
 }));
 
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const accessToken = await user.getIdToken();
-    useAuthStore.getState().setUser(user, accessToken);
-  } else {
-    useAuthStore.getState().logout();
-  }
-});
+useAuthStore.getState().checkLoginStatus();

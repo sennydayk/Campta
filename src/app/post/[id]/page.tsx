@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import { Bookmark, ChevronLeft, ChevronRight } from "lucide-react";
-import Link from "next/link";
 import Image from "next/image";
 import Comment, { CommentProps } from "@/components/Comment";
-import Header from "@/components/Header";
 
-// Post Content Component
 const PostContent = () => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isScrap, setIsScrap] = useState(false);
