@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import WriteButton from "@/components/WriteButton";
 import ContentBox from "@/components/ContentBox";
 
