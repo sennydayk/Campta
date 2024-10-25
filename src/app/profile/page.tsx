@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { Footer } from "@/components/ui/footer/Footer";
 
 const ProfileContent = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -49,11 +50,13 @@ const ProfileContent = () => {
   );
 };
 
-// Main Page Component
-export default function MyPage() {
+export default function Profile() {
   return (
-    <>
-      <ProfileContent />
-    </>
+    <div className="flex min-h-screen bg-gray-100">
+      <div className="flex-1 p-8">
+        <ProfileContent />
+      </div>
+      <Footer />
+    </div>
   );
 }
