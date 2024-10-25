@@ -1,5 +1,6 @@
-import WriteButton from "@/components/WriteButton";
+import WriteButton from "@/components/ui/WriteButton";
 import ContentBox from "@/components/ContentBox";
+import { Footer } from "@/components/ui/footer/Footer";
 
 export default function Home() {
   const contentBoxes = Array(6).fill({
@@ -18,6 +19,7 @@ export default function Home() {
           ))}
         </div>
       </main>
+      <Footer />
       <WriteButton />
     </div>
   );

@@ -7,9 +7,9 @@ export default function Header() {
   return (
     <header className="bg-white shadow">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">CAMPTA</h1>
+        <h1 className="text-2xl font-bold text-font_main">CAMPTA</h1>
         <SearchBar />
-        <Link href="/login" className="text-gray-600 hover:text-gray-900">
+        <Link href="/login" className="text-font_main hover:text-font_sub">
           로그인
         </Link>
       </div>
