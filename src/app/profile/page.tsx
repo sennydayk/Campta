@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Footer } from "@/components/ui/footer/Footer";
-import Header from "@/components/ui/header/Header";
 
 const ProfileContent = () => {
   const [isEditing, setIsEditing] = useState(false);
