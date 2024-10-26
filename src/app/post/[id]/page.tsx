@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { Bookmark, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import Comment, { CommentProps } from "@/components/Comment";
+import Comment, { CommentProps } from "@/app/post/components/Comment";
+import Button from "@/components/ui/Button";
 
 const PostContent = () => {
   const [currentImage, setCurrentImage] = useState(0);
@@ -47,7 +48,7 @@ const PostContent = () => {
           <button
             key={index}
             className={`h-2 w-2 rounded-full ${
-              index === currentImage ? "bg-blue-500" : "bg-gray-300"
+              index === currentImage ? "bg-main" : "bg-sub"
             }`}
             onClick={() => setCurrentImage(index)}
           />
@@ -68,13 +69,13 @@ const PostContent = () => {
   );
 };
 
-// Comments Section Component
+// 댓글 영역
 const CommentsSection = () => {
   const [newComment, setNewComment] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle comment submission
+    // 댓글 작성 로직
     console.log("Submitted comment:", newComment);
     setNewComment("");
   };
@@ -115,21 +116,15 @@ const CommentsSection = () => {
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="댓글 내용을 입력해주세요."
-            className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-main"
           />
-          <button
-            type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 whitespace-nowrap"
-          >
-            작성하기
-          </button>
+          <Button type="submit" label="작성하기" />
         </div>
       </form>
     </div>
   );
 };
 
-// Main Page Component
 export default function PostDetailPage() {
   return (
     <div className="min-h-screen bg-gray-100">

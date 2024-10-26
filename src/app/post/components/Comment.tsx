@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import { useState } from "react";
 
 export interface CommentProps {
@@ -22,7 +23,7 @@ export default function Comment({
 
   const handleReplySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle reply submission
+    // 댓글 작성 로직
     console.log("Submitted reply:", replyContent);
     setReplyContent("");
     setIsReplying(false);
@@ -37,7 +38,7 @@ export default function Comment({
       <p className="mt-1">{content}</p>
       {depth === 0 && (
         <button
-          className="mt-1 text-sm text-blue-500 hover:text-blue-600"
+          className="mt-1 text-sm text-font_sub hover:text-main"
           onClick={() => setIsReplying(!isReplying)}
         >
           답글 쓰기
@@ -51,14 +52,9 @@ export default function Comment({
               value={replyContent}
               onChange={(e) => setReplyContent(e.target.value)}
               placeholder="답글을 입력해주세요."
-              className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-main"
             />
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 whitespace-nowrap"
-            >
-              답글 작성
-            </button>
+            <Button type="submit" label="답글쓰기" />
           </div>
         </form>
       )}

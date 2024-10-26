@@ -1,5 +1,5 @@
 import WriteButton from "@/components/ui/WriteButton";
-import ContentBox from "@/components/ContentBox";
+import ContentBox from "@/components/ui/ContentBox";
 import { Footer } from "@/components/ui/footer/Footer";
 
 export default function Home() {
