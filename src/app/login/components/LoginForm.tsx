@@ -87,9 +87,14 @@ export default function LoginForm() {
       alert("로그인이 완료되었습니다. 홈으로 이동합니다");
       router.push("/");
     },
-    onError: (error: any) => {
-      console.error("로그인 실패", error);
-      alert("로그인에 실패했습니다.");
+    onError: (error: unknown) => {
+      if (error instanceof Error) {
+        console.error("로그인 실패", error.message);
+        alert(`로그인에 실패했습니다: ${error.message}`);
+      } else {
+        console.error("로그인 실패", error);
+        alert("로그인에 실패했습니다.");
+      }
     },
   });
 

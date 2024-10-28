@@ -1,7 +1,6 @@
 import Cookies from "js-cookie";
 import { create } from "zustand";
 import { auth } from "@/firebase/firebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
 
 interface IUser {
   uid: string;
