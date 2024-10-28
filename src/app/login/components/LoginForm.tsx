@@ -34,7 +34,8 @@ async function loginUser(
   });
 
   if (!response.ok) {
-    throw new Error("Login failed");
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Login failed");
   }
 
   return response.json();
@@ -48,6 +49,7 @@ export default function LoginForm() {
   const { isLogin, setUser, checkLoginStatus } = useAuthStore();
 
   useEffect(() => {
+    checkLoginStatus();
     if (isLogin) {
       router.push("/");
     }
@@ -61,7 +63,12 @@ export default function LoginForm() {
   const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
     mutationFn: (credentials) => loginUser(credentials),
     onSuccess: (data) => {
-      Cookies.set("accessToken", data.token, { expires: 7 });
+      Cookies.set("accessToken", data.token, {
+        expires: 7,
+        path: "/",
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+      });
 
       setUser({
         uid: data.user.uid,

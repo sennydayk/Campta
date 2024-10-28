@@ -28,41 +28,27 @@ export const useAuthStore = create<AuthStore>((set) => ({
     set({ user, isLogin: true });
   },
 
-  setAccessToken: (token: string) => {
-    Cookies.set("accessToken", token, { expires: 7 });
-    set({ accessToken: token, isLogin: true });
+  setAccessToken: (token) => {
+    set({ accessToken: token });
+    Cookies.set("accessToken", token, {
+      expires: 7,
+      path: "/",
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    });
   },
 
   checkLoginStatus: () => {
     const token = Cookies.get("accessToken");
     if (token) {
       set({ isLogin: true, accessToken: token });
-      onAuthStateChanged(auth, (currentUser) => {
-        if (currentUser) {
-          set({
-            user: {
-              uid: currentUser.uid,
-              email: currentUser.email || "",
-              nickName: currentUser.displayName || "",
-            },
-            isLogin: true,
-          });
-        } else {
-          set({
-            user: null,
-            isLogin: false,
-            accessToken: null,
-          });
-          Cookies.remove("accessToken");
-        }
-      });
     } else {
-      set({ isLogin: false, user: null, accessToken: null });
+      set({ isLogin: false, accessToken: null, user: null });
     }
   },
 
   logout: () => {
-    Cookies.remove("accessToken");
+    Cookies.remove("accessToken", { path: "/" });
     set({
       isLogin: false,
       user: null,
