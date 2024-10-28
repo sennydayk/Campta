@@ -3,11 +3,43 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import Button from "@/components/ui/Button";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebaseConfig";
 import { useAuthStore } from "@/store/auth/authStore";
 import Cookies from "js-cookie";
+
+interface LoginCredentials {
+  email: string;
+  password: string;
+}
+
+interface LoginResponse {
+  user: {
+    uid: string;
+    email: string;
+    nickName: string;
+  };
+  token: string;
+}
+
+async function loginUser(
+  credentials: LoginCredentials
+): Promise<LoginResponse> {
+  const response = await fetch("/api/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(credentials),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Login failed");
+  }
+
+  return response.json();
+}
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -17,6 +49,7 @@ export default function LoginForm() {
   const { isLogin, setUser, checkLoginStatus } = useAuthStore();
 
   useEffect(() => {
+    checkLoginStatus();
     if (isLogin) {
       router.push("/");
     }
@@ -27,24 +60,20 @@ export default function LoginForm() {
     }
   }, [isLogin, router]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-
-      const token = await user.getIdToken();
-      Cookies.set("accessToken", token, { expires: 7 });
+  const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
+    mutationFn: (credentials) => loginUser(credentials),
+    onSuccess: (data) => {
+      Cookies.set("accessToken", data.token, {
+        expires: 7,
+        path: "/",
+        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
+      });
 
       setUser({
-        uid: user.uid,
-        email: user.email ?? "",
-        nickName: user.displayName ?? "",
+        uid: data.user.uid,
+        email: data.user.email ?? "",
+        nickName: data.user.nickName ?? "",
       });
 
       if (rememberMe) {
@@ -57,10 +86,21 @@ export default function LoginForm() {
       console.log("로그인 완료", { email, rememberMe });
       alert("로그인이 완료되었습니다. 홈으로 이동합니다");
       router.push("/");
-    } catch (error) {
-      console.error("로그인 실패", error);
-      alert("로그인에 실패했습니다.");
-    }
+    },
+    onError: (error: unknown) => {
+      if (error instanceof Error) {
+        console.error("로그인 실패", error.message);
+        alert(`로그인에 실패했습니다: ${error.message}`);
+      } else {
+        console.error("로그인 실패", error);
+        alert("로그인에 실패했습니다.");
+      }
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    mutation.mutate({ email, password });
   };
 
   return (
@@ -115,7 +155,7 @@ export default function LoginForm() {
             아이디 저장
           </label>
         </div>
-        <Button label="로그인" type="submit" />
+        <Button label="로그인" type="submit" disabled={mutation.isPending} />
       </form>
       <div className="mt-4 text-center">
         <p className="text-sm text-font_sub">
