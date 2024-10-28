@@ -1,14 +1,49 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import Button from "@/components/ui/Button";
 import { useAuthStore } from "@/store/auth/authStore";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth, db } from "@/firebase/firebaseConfig";
-import { doc, setDoc } from "firebase/firestore";
+
+interface RegisterUserData {
+  name: string;
+  email: string;
+  password: string;
+  nickname: string;
+  birthdate: string;
+  profileImage: string | null;
+}
+
+interface RegisterResponse {
+  user: { uid: string; email: string; nickName: string };
+  accessToken: string;
+}
+
+async function registerUser(userData: {
+  name: string;
+  email: string;
+  password: string;
+  nickname: string;
+  birthdate: string;
+  profileImage: string | null;
+}) {
+  const response = await fetch("/api/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(userData),
+  });
+
+  if (!response.ok) {
+    throw new Error("Registration failed");
+  }
+
+  return response.json();
+}
 
 export default function SignupForm() {
   const [name, setName] = useState("");
@@ -19,23 +54,24 @@ export default function SignupForm() {
   const [birthdate, setBirthdate] = useState("");
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { isLogin, setUser, setAccessToken, checkLoginStatus } = useAuthStore();
+  const { setUser, setAccessToken } = useAuthStore();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      checkLoginStatus();
-      if (isLogin) {
-        router.push("/");
-      } else {
-        setIsLoading(false);
-      }
-    };
-    checkAuth();
-  }, [isLogin, checkLoginStatus, router]);
+  const mutation = useMutation<RegisterResponse, Error, RegisterUserData>({
+    mutationFn: (userData: RegisterUserData) => registerUser(userData),
+    onSuccess: (data) => {
+      setUser(data.user);
+      setAccessToken(data.accessToken);
+      alert(`${name}님, 회원가입이 완료되었습니다. 홈 페이지로 이동합니다.`);
+      router.push("/");
+    },
+    onError: (error) => {
+      console.error("Registration error", error);
+      alert("회원가입에 실패했습니다.");
+    },
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -43,41 +79,14 @@ export default function SignupForm() {
       return;
     }
 
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-
-      await updateProfile(user, { displayName: name });
-
-      await setDoc(doc(db, "users", user.uid), {
-        uid: user.uid,
-        name,
-        email,
-        nickname,
-        birthdate,
-        profileImage,
-      });
-
-      const accessToken = await user.getIdToken();
-
-      setUser({
-        uid: user.uid,
-        email: user.email || "",
-        nickName: nickname,
-      });
-      setAccessToken(accessToken);
-
-      console.log("회원가입 완료", user);
-      alert(`${name}님, 회원가입이 완료되었습니다. 홈 페이지로 이동합니다.`);
-      router.push("/");
-    } catch (error) {
-      console.error("에러 발생", error);
-      alert("회원가입에 실패했습니다.");
-    }
+    mutation.mutate({
+      name,
+      email,
+      password,
+      nickname,
+      birthdate,
+      profileImage,
+    });
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,10 +99,6 @@ export default function SignupForm() {
       reader.readAsDataURL(file);
     }
   };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
@@ -227,7 +232,7 @@ export default function SignupForm() {
             required
           />
         </div>
-        <Button label="회원가입" type="submit" />
+        <Button label="회원가입" type="submit" disabled={mutation.isPending} />
       </form>
       <div className="mt-4 text-center">
         <p className="text-sm text-font_sub">

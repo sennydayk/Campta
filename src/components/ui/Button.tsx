@@ -7,6 +7,7 @@ export interface ButtonProps {
   fontSize?: string;
   fontWeight?: string;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 }
 
 export default function Button({
