@@ -1,6 +1,6 @@
-import WriteButton from "@/components/ui/WriteButton";
-import ContentBox from "@/components/ui/ContentBox";
-import { Footer } from "@/components/ui/footer/Footer";
+import WriteButton from "@/components/common/ui/WriteButton";
+import ContentBox from "@/components/common/ui/ContentBox";
+import { Footer } from "@/components/common/ui/footer/Footer";
 
 export default function Home() {
   const contentBoxes = Array(6).fill({

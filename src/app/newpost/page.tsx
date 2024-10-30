@@ -2,26 +2,16 @@
 
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { NewPostForm } from "./components/NewPostForm";
 import { useRouter } from "next/navigation";
-
-async function createPost(postData: FormData) {
-  const response = await fetch("/api/posts", {
-    method: "POST",
-    body: postData,
-  });
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.error || "게시글 등록에 실패했습니다.");
-  }
-  return response.json();
-}
+import { NewPostForm } from "@/components/newpost/NewPostForm";
+import { createPost } from "./api/newPost";
+import type { PostResponse } from "./types";
 
 export default function NewPostPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
-  const mutation = useMutation({
+  const mutation = useMutation<PostResponse, Error, FormData>({
     mutationFn: createPost,
     onSuccess: (data) => {
       router.push(`/posts/${data.id}`);
@@ -31,11 +21,7 @@ export default function NewPostPage() {
     },
   });
 
-  const handleSubmit = async (
-    title: string,
-    content: string,
-    images: File[]
-  ) => {
+  const handleSubmit = (title: string, content: string, images: File[]) => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);

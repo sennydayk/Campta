@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { PostImageUploader } from "./PostImageUploader";
-import Button from "@/components/ui/Button";
+import Button from "@/components/common/ui/Button";
 
 interface NewPostFormProps {
   onSubmit: (title: string, content: string, images: File[]) => void;

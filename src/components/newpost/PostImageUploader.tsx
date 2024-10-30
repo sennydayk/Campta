@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { X } from "lucide-react";
 import Image from "next/image";
-import Button from "@/components/ui/Button";
 
 interface PostImageUploaderProps {
   images: File[];
