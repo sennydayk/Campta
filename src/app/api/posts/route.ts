@@ -37,9 +37,16 @@ export async function POST(request: Request) {
     for (let i = 0; i < 5; i++) {
       const image = formData.get(`image${i}`) as File | null;
       if (image) {
-        if (image.size > 5 * 1024 * 1024) {
+        console.log(`Processing image${i}:`, image.name, image.size);
+        // 이미지 제한
+        if (image.size > 20 * 1024 * 1024) {
           return NextResponse.json(
-            { error: "이미지 크기는 5MB를 초과할 수 없습니다." },
+            {
+              error: `이미지 크기는 20MB를 초과할 수 없습니다. (현재 크기: ${(
+                image.size /
+                (1024 * 1024)
+              ).toFixed(2)}MB)`,
+            },
             { status: 400 }
           );
         }
@@ -64,7 +71,7 @@ export async function POST(request: Request) {
       images: imageUrls,
     });
   } catch (error) {
-    console.error("Error creating post:", error);
+    console.error("게시글 등록 중 에러 발생:", error);
     return NextResponse.json(
       { error: "게시글 등록에 실패했습니다." },
       { status: 500 }
