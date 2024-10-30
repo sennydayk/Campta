@@ -1,24 +1,23 @@
+import { useState } from "react";
+import { PostImageUploader } from "./PostImageUploader";
 import Button from "@/components/ui/Button";
 
 interface NewPostFormProps {
-  title: string;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
-  content: string;
-  setContent: React.Dispatch<React.SetStateAction<string>>;
-  onSubmit: (e: React.FormEvent) => void;
-  children: React.ReactNode;
+  onSubmit: (title: string, content: string, images: File[]) => void;
 }
 
-export function NewPostForm({
-  title,
-  setTitle,
-  content,
-  setContent,
-  onSubmit,
-  children,
-}: NewPostFormProps) {
+export function NewPostForm({ onSubmit }: NewPostFormProps) {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [images, setImages] = useState<File[]>([]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(title, content, images);
+  };
+
   return (
-    <form onSubmit={onSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div>
         <h2 className="mb-1">제목</h2>
         <input
@@ -43,7 +42,9 @@ export function NewPostForm({
           required
         />
       </div>
-      {children}
+
+      <PostImageUploader images={images} setImages={setImages} />
+
       <Button type="submit" label="게시글 작성" />
     </form>
   );

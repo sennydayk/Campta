@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Bookmark, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
-import Comment, { CommentProps } from "@/app/post/components/Comment";
+import Comment, { CommentProps } from "@/app/posts/components/Comment";
 import Button from "@/components/ui/Button";
 
 const PostContent = () => {

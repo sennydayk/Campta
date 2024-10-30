@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { X } from "lucide-react";
 import Image from "next/image";
+import Button from "@/components/ui/Button";
 
 interface PostImageUploaderProps {
-  images: string[];
-  setImages: React.Dispatch<React.SetStateAction<string[]>>;
+  images: File[];
+  setImages: React.Dispatch<React.SetStateAction<File[]>>;
 }
 
 export function PostImageUploader({
@@ -12,30 +13,42 @@ export function PostImageUploader({
   setImages,
 }: PostImageUploaderProps) {
   const [error, setError] = useState<string | null>(null);
+  const [previews, setPreviews] = useState<string[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (images.length + files.length > 5) {
-      setError("최대 5개의 이미지만 업로드할 수 있습니다.");
+      setError("이미지 등록은 최대 5개까지 가능합니다.");
       return;
     }
     setError(null);
 
-    const newImages = files.map((file) => URL.createObjectURL(file));
-    setImages((prevImages) => [...prevImages, ...newImages]);
+    const newPreviews = files.map((file) => URL.createObjectURL(file));
+    setPreviews((prev) => [...prev, ...newPreviews]);
+    setImages((prev) => [...prev, ...files]);
   };
 
   const removeImage = (index: number) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setImages((prev) => prev.filter((_, i) => i !== index));
+    setPreviews((prev) => {
+      const newPreviews = prev.filter((_, i) => i !== index);
+      URL.revokeObjectURL(prev[index]);
+      return newPreviews;
+    });
+  };
+
+  const handleButtonClick = () => {
+    fileInputRef.current?.click();
   };
 
   return (
     <div className="mt-4">
       <div className="flex flex-wrap gap-4 mb-4">
-        {images.map((image, index) => (
+        {previews.map((preview, index) => (
           <div key={index} className="relative">
             <Image
-              src={image}
+              src={preview}
               alt={`Uploaded image ${index + 1}`}
               width={100}
               height={100}
@@ -52,6 +65,7 @@ export function PostImageUploader({
       </div>
       <div>
         <input
+          ref={fileInputRef}
           type="file"
           accept="image/*"
           multiple
@@ -59,11 +73,13 @@ export function PostImageUploader({
           className="hidden"
           id="image-upload"
         />
-        <label htmlFor="image-upload">
-          <button type="button" className="cursor-pointer">
-            이미지 업로드 ({images.length}/5)
-          </button>
-        </label>
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          className="px-4 py-2 bg-bg border-2 border-border text-font_btn rounded-md hover:bg-sub transition-colors"
+        >
+          이미지 업로드 ({images.length}/5)
+        </button>
         {error && <p className="text-red-500 mt-2">{error}</p>}
       </div>
     </div>
