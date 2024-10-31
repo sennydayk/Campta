@@ -1,46 +1,54 @@
 "use client";
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useParams } from "next/navigation";
 import { PostContent } from "@/components/posts/PostContent";
 import { CommentsSection } from "@/components/posts/CommentSection";
-import { fetchPost, deletePost } from "../../../api/posts/posts";
-import type { Post } from "../types";
+import { usePostStore } from "@/store/posts/postStore";
+import { usePostQuery } from "@/lib/posts/hooks/usePostQuery";
+import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
+import { useEffect } from "react";
 
 export default function PostDetailPage() {
   const router = useRouter();
   const params = useParams();
   const postId = params.id as string;
-  const queryClient = useQueryClient();
 
-  const {
-    data: post,
-    isLoading,
-    isError,
-  } = useQuery<Post, Error>({
-    queryKey: ["post", postId],
-    queryFn: () => fetchPost(postId),
-  });
+  const { setCurrentPost, setError, setLoading } = usePostStore();
+  const { deletePostMutation } = usePostMutations();
 
-  const deleteMutation = useMutation<{ message: string }, Error, string>({
-    mutationFn: deletePost,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["post", postId] });
-      router.push("/");
-    },
-  });
+  const { data: post, isLoading, error } = usePostQuery(postId);
 
-  const handleDelete = () => {
-    if (window.confirm("정말로 이 게시글을 삭제하시겠습니까?")) {
-      deleteMutation.mutate(postId);
+  useEffect(() => {
+    if (post) {
+      setCurrentPost(post);
+      setLoading(false);
+      setError(null);
+    }
+  }, [post, setCurrentPost, setLoading, setError]);
+
+  useEffect(() => {
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  }, [error, setError, setLoading]);
+
+  const handleDelete = async () => {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      try {
+        await deletePostMutation.mutateAsync(postId);
+        router.push("/");
+      } catch (error) {
+        console.error("게시물 삭제 실패:", error);
+      }
     }
   };
 
   if (isLoading) return <div className="text-center mt-8">로딩 중...</div>;
-  if (isError)
+  if (error)
     return (
       <div className="text-center mt-8 text-red-500">
-        게시글을 불러오는데 실패했습니다.
+        게시글을 불러오는데 실패했습니다: {error.message}
       </div>
     );
   if (!post)

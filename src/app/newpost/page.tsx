@@ -1,27 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { NewPostForm } from "@/components/newpost/NewPostForm";
-import { createPost } from "./api/newPost";
-import type { PostResponse } from "./types";
+import { usePostStore } from "@/store/posts/postStore";
+import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
 
 export default function NewPostPage() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+  const { error } = usePostStore();
+  const { createPostMutation } = usePostMutations();
 
-  const mutation = useMutation<PostResponse, Error, FormData>({
-    mutationFn: createPost,
-    onSuccess: (data) => {
-      router.push(`/posts/${data.id}`);
-    },
-    onError: (error: Error) => {
-      setError(error.message);
-    },
-  });
-
-  const handleSubmit = (title: string, content: string, images: File[]) => {
+  const handleSubmit = async (
+    title: string,
+    content: string,
+    images: File[]
+  ) => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
@@ -29,7 +22,12 @@ export default function NewPostPage() {
       formData.append(`image${index}`, image);
     });
 
-    mutation.mutate(formData);
+    try {
+      const data = await createPostMutation.mutateAsync(formData);
+      router.push(`/posts/${data.id}`);
+    } catch (error) {
+      console.error("게시물 생성 실패:", error);
+    }
   };
 
   return (

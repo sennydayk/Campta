@@ -5,6 +5,10 @@ export interface Post {
   images: string[];
 }
 
+export interface PostResponse {
+  id: string;
+}
+
 export interface CommentProps {
   username: string;
   content: string;
@@ -12,3 +16,7 @@ export interface CommentProps {
   depth: number;
   replies?: CommentProps[];
 }
+
+export type ApiError = {
+  message: string;
+};
