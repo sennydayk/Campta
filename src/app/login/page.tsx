@@ -9,7 +9,7 @@ import Button from "@/components/common/ui/Button";
 import { useAuthStore } from "@/store/auth/authStore";
 import { FormInput } from "@/components/auth/login/FormInput";
 import { RememberMe } from "@/components/auth/login/RememberMe";
-import { loginUser } from "./api/login";
+import { loginUser } from "../../api/auth/login";
 import type { LoginCredentials, LoginResponse } from "./types";
 export default function LoginForm() {
   const [formData, setFormData] = useState({

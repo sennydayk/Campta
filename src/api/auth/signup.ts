@@ -1,4 +1,7 @@
-import type { RegisterUserData, RegisterResponse } from "../types";
+import type {
+  RegisterUserData,
+  RegisterResponse,
+} from "../../app/signup/types";
 
 export async function registerUser(
   userData: RegisterUserData

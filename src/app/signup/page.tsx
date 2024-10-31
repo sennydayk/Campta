@@ -8,7 +8,7 @@ import Button from "@/components/common/ui/Button";
 import { useAuthStore } from "@/store/auth/authStore";
 import { ProfileImageUploader } from "@/components/auth/signup/ProfileImageUploader";
 import { FormInput } from "@/components/auth/signup/FormInput";
-import { registerUser } from "./api/signup";
+import { registerUser } from "../../api/auth/signup";
 import type { RegisterUserData, RegisterResponse } from "./types";
 
 export default function SignupForm() {

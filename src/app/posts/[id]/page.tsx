@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useParams } from "next/navigation";
 import { PostContent } from "@/components/posts/PostContent";
 import { CommentsSection } from "@/components/posts/CommentSection";
-import { fetchPost, deletePost } from "../api/posts";
+import { fetchPost, deletePost } from "../../../api/posts/posts";
 import type { Post } from "../types";
 
 export default function PostDetailPage() {
