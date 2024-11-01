@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Bookmark, Trash2 } from "lucide-react";
 import { Post } from "@/app/posts/types";
 import { ImageSlider } from "./ImageSlider";
+import { useRouter } from "next/navigation";
 
 interface PostContentProps {
   post: Post;
@@ -10,6 +11,7 @@ interface PostContentProps {
 
 export function PostContent({ post, onDelete }: PostContentProps) {
   const [isScrap, setIsScrap] = useState(false);
+  const router = useRouter();
 
   return (
     <div className="max-w-3xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 pb-8 border-b">
@@ -17,6 +19,9 @@ export function PostContent({ post, onDelete }: PostContentProps) {
       <div className="mt-4 flex justify-between items-center">
         <h1 className="text-2xl font-bold">{post.title}</h1>
         <div className="flex items-center space-x-2">
+          <button onClick={() => router.push(`/posts/${post.id}/edit`)}>
+            수정하기
+          </button>
           <button onClick={() => setIsScrap(!isScrap)}>
             <Bookmark
               className={`h-6 w-6 ${

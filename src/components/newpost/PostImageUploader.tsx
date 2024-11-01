@@ -1,86 +1,73 @@
-import { useState, useRef } from "react";
-import { X } from "lucide-react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 interface PostImageUploaderProps {
   images: File[];
   setImages: React.Dispatch<React.SetStateAction<File[]>>;
+  initialImages?: string[];
 }
 
 export function PostImageUploader({
   images,
   setImages,
+  initialImages = [],
 }: PostImageUploaderProps) {
-  const [error, setError] = useState<string | null>(null);
-  const [previews, setPreviews] = useState<string[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (images.length + files.length > 5) {
-      setError("이미지 등록은 최대 5개까지 가능합니다.");
-      return;
+  useEffect(() => {
+    // Create preview URLs for initial images
+    setPreviewUrls(initialImages);
+  }, [initialImages]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      setImages((prevImages) => [...prevImages, ...newFiles]);
+
+      // Create preview URLs for new images
+      const newUrls = newFiles.map((file) => URL.createObjectURL(file));
+      setPreviewUrls((prevUrls) => [...prevUrls, ...newUrls]);
     }
-    setError(null);
-
-    const newPreviews = files.map((file) => URL.createObjectURL(file));
-    setPreviews((prev) => [...prev, ...newPreviews]);
-    setImages((prev) => [...prev, ...files]);
   };
 
   const removeImage = (index: number) => {
-    setImages((prev) => prev.filter((_, i) => i !== index));
-    setPreviews((prev) => {
-      const newPreviews = prev.filter((_, i) => i !== index);
-      URL.revokeObjectURL(prev[index]);
-      return newPreviews;
-    });
-  };
-
-  const handleButtonClick = () => {
-    fileInputRef.current?.click();
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    setPreviewUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
   };
 
   return (
-    <div className="mt-4">
-      <div className="flex flex-wrap gap-4 mb-4">
-        {previews.map((preview, index) => (
-          <div key={index} className="relative">
-            <Image
-              src={preview}
-              alt={`Uploaded image ${index + 1}`}
-              width={100}
-              height={100}
-              className="rounded-lg"
-            />
-            <button
-              onClick={() => removeImage(index)}
-              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-            >
-              <X size={16} />
-            </button>
-          </div>
-        ))}
-      </div>
-      <div>
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          multiple
-          onChange={handleImageUpload}
-          className="hidden"
-          id="image-upload"
-        />
-        <button
-          type="button"
-          onClick={handleButtonClick}
-          className="px-4 py-2 bg-bg border-2 border-border text-font_btn rounded-md hover:bg-sub transition-colors"
-        >
-          이미지 업로드 ({images.length}/5)
-        </button>
-        {error && <p className="text-red-500 mt-2">{error}</p>}
-      </div>
+    <div className="space-y-4">
+      <label htmlFor="images">이미지 업로드</label>
+      <input
+        id="images"
+        type="file"
+        onChange={handleImageChange}
+        accept="image/*"
+        multiple
+      />
+      {previewUrls.length > 0 && (
+        <div className="grid grid-cols-2 gap-4 mt-4">
+          {previewUrls.map((url, index) => (
+            <div key={index} className="relative">
+              <Image
+                src={url}
+                alt={`Preview ${index + 1}`}
+                width={200}
+                height={200}
+                objectFit="cover"
+                className="rounded-lg"
+              />
+              <button
+                type="button"
+                className="absolute top-2 right-2"
+                onClick={() => removeImage(index)}
+              >
+                삭제
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

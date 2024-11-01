@@ -1,23 +1,34 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createPost } from "@/api/posts/newPost";
-import { deletePost } from "@/api/posts/posts";
+import { createPost } from "@/api/posts/posts";
+import { updatePost, deletePost } from "@/api/posts/posts";
 import { usePostStore } from "@/store/posts/postStore";
-import type { PostResponse, ApiError } from "@/app/posts/types";
+import type { Post, PostResponse, ApiError } from "@/app/posts/types";
 
 export function usePostMutations() {
   const queryClient = useQueryClient();
-  const { setError, setLoading, resetState } = usePostStore();
+  const { setError } = usePostStore();
 
   const createPostMutation = useMutation<PostResponse, ApiError, FormData>({
     mutationFn: createPost,
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
-      setLoading(false);
-      setError(null);
     },
     onError: (error: ApiError) => {
       setError(error.message);
-      setLoading(false);
+    },
+  });
+
+  const updatePostMutation = useMutation<
+    Post,
+    ApiError,
+    { id: string; formData: FormData }
+  >({
+    mutationFn: ({ id, formData }) => updatePost(id, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+    },
+    onError: (error: ApiError) => {
+      setError(error.message);
     },
   });
 
@@ -26,17 +37,16 @@ export function usePostMutations() {
       mutationFn: deletePost,
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["posts"] });
-        resetState();
       },
       onError: (error: ApiError) => {
         setError(error.message);
-        setLoading(false);
       },
     }
   );
 
   return {
     createPostMutation,
+    updatePostMutation,
     deletePostMutation,
   };
 }

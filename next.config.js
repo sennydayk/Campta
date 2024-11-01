@@ -1,12 +1,10 @@
-module.exports = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   experimental: {
     middleware: true,
   },
-};
-
-/** @type {import('next').NextConfig} */
-const nextConfig = {
   images: {
+    domains: ["firebasestorage.googleapis.com"],
     remotePatterns: [
       {
         protocol: "https",
