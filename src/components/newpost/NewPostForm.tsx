@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Button from "../common/ui/Button";
 
 interface NewPostFormProps {
   onSubmit: (
@@ -172,16 +173,14 @@ export function NewPostForm({
           onChange={handleImageUpload}
           multiple
           accept="image/*"
-          className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+          className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sub file:text-font_btn hover:file:bg-main cursor-pointer"
         />
       </div>
-
-      <button
-        type="submit"
-        className="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-      >
-        {initialTitle ? "게시글 수정" : "게시글 작성"}
-      </button>
+      {initialTitle ? (
+        <Button type="submit" label="게시글 수정" />
+      ) : (
+        <Button type="submit" label="게시글 작성" />
+      )}
     </form>
   );
 }

@@ -8,6 +8,7 @@ import {
 } from "firebase/storage";
 import { NextResponse } from "next/server";
 
+// Function to upload an image and return its URL
 const uploadImageAndGetURL = async (
   file: File,
   postId: string,
@@ -16,12 +17,11 @@ const uploadImageAndGetURL = async (
   const fileExtension = file.name.split(".").pop();
   const fileName = `${postId}_${index}.${fileExtension}`;
   const storageRef = ref(storage, `posts/${fileName}`);
-
   await uploadBytes(storageRef, file);
   return getDownloadURL(storageRef);
 };
 
-// GET: 개별 게시글 조회
+// GET: Fetch a single post
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
@@ -29,10 +29,9 @@ export async function GET(
   try {
     const docRef = doc(db, "posts", params.id);
     const docSnap = await getDoc(docRef);
-
     if (docSnap.exists()) {
       const postData = docSnap.data();
-      console.log("Image URLs:", postData.images); // 이미지 URL 로깅
+      console.log("Image URLs:", postData.images); // Log image URLs
       return NextResponse.json({ id: docSnap.id, ...postData });
     } else {
       return NextResponse.json(
@@ -49,7 +48,7 @@ export async function GET(
   }
 }
 
-// PUT: 게시글 수정
+// PUT: Update a post
 export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
@@ -57,8 +56,8 @@ export async function PUT(
   try {
     const formData = await request.formData();
     const docRef = doc(db, "posts", params.id);
-
     const docSnap = await getDoc(docRef);
+
     if (!docSnap.exists()) {
       return NextResponse.json(
         { error: "수정할 게시글을 찾을 수 없습니다." },
@@ -67,8 +66,14 @@ export async function PUT(
     }
 
     const existingData = docSnap.data();
-    const existingImages = existingData.images || [];
-    const updateData: { [key: string]: any } = {};
+    const existingImages: string[] = (existingData.images || []) as string[];
+
+    type UpdateData = {
+      [key: string]: string | string[] | undefined;
+      images?: string[];
+    };
+
+    const updateData: UpdateData = {};
     const imageUploadPromises: Promise<string>[] = [];
     const newImages: string[] = [];
     const imagesToKeep: string[] = [];
@@ -84,7 +89,7 @@ export async function PUT(
         );
         imageUploadPromises.push(uploadPromise);
       } else {
-        updateData[key] = value;
+        updateData[key] = value as string;
       }
     });
 
@@ -101,10 +106,9 @@ export async function PUT(
 
     const uploadedImageUrls = await Promise.all(imageUploadPromises);
     newImages.push(...uploadedImageUrls);
-
     updateData.images = newImages;
-    await updateDoc(docRef, updateData);
 
+    await updateDoc(docRef, updateData);
     const updatedDocSnap = await getDoc(docRef);
 
     return NextResponse.json({
@@ -120,7 +124,7 @@ export async function PUT(
   }
 }
 
-// DELETE: 게시글 삭제
+// DELETE: Delete a post
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }
@@ -137,6 +141,7 @@ export async function DELETE(
     }
 
     const postData = docSnap.data();
+
     if (postData.images && postData.images.length > 0) {
       await Promise.all(
         postData.images.map(async (imageUrl: string) => {

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { Post, PostResponse, ApiError } from "@/app/posts/types";
+import type { Post } from "@/app/posts/types";
 
 interface PostStore {
   currentPost: Post | null;

@@ -8,7 +8,6 @@ interface PostImageUploaderProps {
 }
 
 export function PostImageUploader({
-  images,
   setImages,
   initialImages = [],
 }: PostImageUploaderProps) {

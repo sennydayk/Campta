@@ -10,14 +10,6 @@ import {
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 import { NextResponse } from "next/server";
 
-interface Post {
-  id: string;
-  title: string;
-  content: string;
-  images: string[];
-  createdAt: string;
-}
-
 const MAX_IMAGE_SIZE = 20 * 1024 * 1024; // 20MB
 
 // GET: 게시글 목록 조회
