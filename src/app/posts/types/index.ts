@@ -3,6 +3,8 @@ export interface Post {
   title: string;
   content: string;
   images: string[];
+  comments: number;
+  scraps: number;
 }
 
 export interface PostResponse {
