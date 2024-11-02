@@ -9,7 +9,7 @@ import { Footer } from "@/components/common/ui/footer/Footer";
 import { fetchPosts } from "@/lib/api";
 import { Post } from "@/app/posts/types";
 
-export default function Posts() {
+export default function PostList() {
   const { ref, inView } = useInView();
 
   const {
@@ -17,7 +17,6 @@ export default function Posts() {
     error,
     fetchNextPage,
     hasNextPage,
-    isFetching,
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
@@ -41,24 +40,33 @@ export default function Posts() {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.pages.map((group, i) =>
+        {data?.pages.map((group) =>
           group.map((post: Post) => (
             <ContentBox
               key={post.id}
+              id={post.id}
               title={post.title}
               description={post.content}
               comments={post.comments}
               scraps={post.scraps}
+              imageUrl={
+                post.images && post.images.length > 0
+                  ? post.images[0]
+                  : undefined
+              }
             />
           ))
         )}
       </div>
-      <div ref={ref}>
+      <div
+        ref={ref}
+        className="flex justify-center mt-10 text-font_sub text-sm font-sans"
+      >
         {isFetchingNextPage
-          ? "Loading more..."
+          ? "로드 중..."
           : hasNextPage
-          ? "Load More"
-          : "Nothing more to load"}
+          ? "더보기"
+          : "더 이상 작성글이 없습니다."}
       </div>
       <Footer />
       <WriteButton />
