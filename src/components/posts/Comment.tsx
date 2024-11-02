@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/ui/Button";
+import Button from "@/components/common/ui/Button";
 import { useState } from "react";
 
 export interface CommentProps {
