@@ -28,7 +28,7 @@ export function CommentSection({ postId }: CommentSectionProps) {
     mutationFn: (
       newCommentData: Omit<CommentProps, "id" | "timestamp" | "replies">
     ) => commentApi.addComment(newCommentData),
-    onSuccess: (newComment) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
       setNewComment("");
     },
