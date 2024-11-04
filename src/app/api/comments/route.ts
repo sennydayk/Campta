@@ -34,14 +34,14 @@ export async function GET(request: NextRequest) {
     const q = query(
       commentsRef,
       where("postId", "==", postId),
-      orderBy("timestamp", "desc")
+      orderBy("timestamp", "asc")
     );
     const querySnapshot = await getDocs(q);
     const comments = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
       timestamp: doc.data().timestamp.toDate().toISOString(),
-      depth: doc.data().depth || 0, // depth가 없으면 0으로 설정
+      depth: doc.data().depth || 0,
     }));
 
     return NextResponse.json(comments);

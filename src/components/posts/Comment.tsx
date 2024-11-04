@@ -6,13 +6,23 @@ import { commentApi } from "@/api/comments/comments";
 import Button from "@/components/common/ui/Button";
 import { CommentProps } from "@/lib/comments/types";
 
+const formatTimestamp = (timestamp: string) => {
+  const date = new Date(timestamp);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
 export default function Comment({
   id,
   postId,
   username,
   content,
   timestamp,
-  depth = 0, // depth의 기본값을 0으로 설정
+  depth = 0,
   replies,
 }: CommentProps) {
   const [isReplying, setIsReplying] = useState(false);
@@ -53,10 +63,10 @@ export default function Comment({
     e.preventDefault();
     addReplyMutation.mutate({
       postId,
-      username: "Current User", // 실제 사용자 정보로 대체해야 합니다
+      username: "Current User", // 유저 정보로 대체해야 함
       content: replyContent,
       parentId: id,
-      depth: depth + 1, // 부모 댓글의 depth에 1을 더합니다
+      depth: depth + 1,
     });
   };
 
@@ -66,7 +76,7 @@ export default function Comment({
   };
 
   const handleDelete = () => {
-    if (window.confirm("정말로 이 댓글을 삭제하시겠습니까?")) {
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
       deleteCommentMutation.mutate(id);
     }
   };
@@ -77,7 +87,9 @@ export default function Comment({
     >
       <div className="flex justify-between items-center">
         <span className="font-semibold">{username}</span>
-        <span className="text-sm text-gray-500">{timestamp}</span>
+        <span className="text-sm text-gray-500">
+          {formatTimestamp(timestamp)}
+        </span>
       </div>
       {isEditing ? (
         <form onSubmit={handleEditSubmit} className="mt-2">

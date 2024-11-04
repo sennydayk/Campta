@@ -38,9 +38,9 @@ export function CommentSection({ postId }: CommentSectionProps) {
     e.preventDefault();
     addCommentMutation.mutate({
       postId,
-      username: "Current User", // 실제 현재 사용자로 교체해야 합니다
+      username: "Current User", // 유저 정보로 대체해야 함
       content: newComment,
-      depth: 0, // 새 댓글은 항상 최상위 레벨이므로 depth를 0으로 설정
+      depth: 0,
     });
   };
 
