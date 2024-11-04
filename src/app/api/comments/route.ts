@@ -41,6 +41,7 @@ export async function GET(request: NextRequest) {
       id: doc.id,
       ...doc.data(),
       timestamp: doc.data().timestamp.toDate().toISOString(),
+      depth: doc.data().depth || 0, // depth가 없으면 0으로 설정
     }));
 
     return NextResponse.json(comments);
@@ -53,25 +54,30 @@ export async function GET(request: NextRequest) {
 // 댓글 작성 로직
 export async function POST(request: NextRequest) {
   try {
-    const { postId, username, content } = await request.json();
+    const { postId, username, content, parentId, depth } = await request.json();
 
     if (!postId || !username || !content) {
       return createErrorResponse("Missing required fields", 400);
     }
 
-    const docRef = await addDoc(collection(db, COMMENTS_COLLECTION), {
+    const newComment = {
       postId,
       username,
       content,
+      parentId: parentId || null,
+      depth: depth || 0,
       timestamp: Timestamp.now(),
-    });
+    };
+
+    const docRef = await addDoc(
+      collection(db, COMMENTS_COLLECTION),
+      newComment
+    );
 
     return NextResponse.json({
       id: docRef.id,
-      postId,
-      username,
-      content,
-      timestamp: Timestamp.now().toDate().toISOString(),
+      ...newComment,
+      timestamp: newComment.timestamp.toDate().toISOString(),
     });
   } catch (error) {
     console.error("Error adding comment:", error);

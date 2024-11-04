@@ -12,13 +12,14 @@ export default function Comment({
   username,
   content,
   timestamp,
-  depth,
+  depth = 0, // depth의 기본값을 0으로 설정
   replies,
 }: CommentProps) {
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [editContent, setEditContent] = useState(content);
+
   const queryClient = useQueryClient();
 
   const addReplyMutation = useMutation({
@@ -55,7 +56,7 @@ export default function Comment({
       username: "Current User", // 실제 사용자 정보로 대체해야 합니다
       content: replyContent,
       parentId: id,
-      depth: depth + 1,
+      depth: depth + 1, // 부모 댓글의 depth에 1을 더합니다
     });
   };
 
@@ -71,7 +72,9 @@ export default function Comment({
   };
 
   return (
-    <div className={`mt-4 ${depth > 0 ? "pl-5" : ""}`}>
+    <div
+      className={`mt-4 ${depth > 0 ? "pl-8 border-l-2 border-gray-200" : ""}`}
+    >
       <div className="flex justify-between items-center">
         <span className="font-semibold">{username}</span>
         <span className="text-sm text-gray-500">{timestamp}</span>
@@ -98,13 +101,15 @@ export default function Comment({
       )}
       {!isEditing && (
         <div className="mt-1 space-x-2">
-          {depth === 0 && (
-            <button
-              className="text-sm text-font_sub hover:text-main"
-              onClick={() => setIsReplying(!isReplying)}
-            >
-              답글 쓰기
-            </button>
+          {(depth === 0 || depth === undefined) && (
+            <>
+              <button
+                className="text-sm text-font_sub hover:text-main"
+                onClick={() => setIsReplying(!isReplying)}
+              >
+                답글 쓰기
+              </button>
+            </>
           )}
           <button
             className="text-sm text-font_sub hover:text-main"
@@ -120,7 +125,7 @@ export default function Comment({
           </button>
         </div>
       )}
-      {isReplying && (
+      {isReplying && depth === 0 && (
         <form onSubmit={handleReplySubmit} className="mt-2">
           <div className="flex items-center space-x-2">
             <input
