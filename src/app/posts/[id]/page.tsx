@@ -2,7 +2,7 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { PostContent } from "@/components/posts/PostContent";
-import { CommentsSection } from "@/components/posts/CommentSection";
+import { CommentSection } from "@/components/posts/CommentSection";
 import { usePostStore } from "@/store/posts/postStore";
 import { usePostQuery } from "@/lib/posts/hooks/usePostQuery";
 import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
@@ -62,7 +62,7 @@ export default function PostDetailPage() {
     <div className="min-h-screen bg-gray-100">
       <main className="py-8">
         <PostContent post={post} onDelete={handleDelete} />
-        <CommentsSection />
+        <CommentSection postId={postId} />
       </main>
     </div>
   );

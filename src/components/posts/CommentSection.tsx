@@ -1,45 +1,81 @@
-import { useState } from "react";
-import Button from "../common/ui/Button";
-import Comment from "@/components/posts/Comment";
-import { CommentProps } from "@/components/posts/Comment";
+"use client";
 
-export function CommentsSection() {
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { commentApi } from "@/api/comments/comments";
+import Button from "@/components/common/ui/Button";
+import Comment from "@/components/posts/Comment";
+import { CommentProps } from "@/lib/comments/types";
+
+interface CommentSectionProps {
+  postId: string;
+}
+
+export function CommentSection({ postId }: CommentSectionProps) {
   const [newComment, setNewComment] = useState("");
+  const queryClient = useQueryClient();
+
+  const {
+    data: comments,
+    isLoading,
+    error,
+  } = useQuery<CommentProps[]>({
+    queryKey: ["comments", postId],
+    queryFn: () => commentApi.getComments(postId),
+  });
+
+  const addCommentMutation = useMutation({
+    mutationFn: (
+      newCommentData: Omit<CommentProps, "id" | "timestamp" | "replies">
+    ) => commentApi.addComment(newCommentData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments", postId] });
+      setNewComment("");
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitted comment:", newComment);
-    setNewComment("");
+    addCommentMutation.mutate({
+      postId,
+      username: "Current User", // 유저 정보로 대체해야 함
+      content: newComment,
+      depth: 0,
+    });
   };
 
-  const comments: CommentProps[] = [
-    {
-      username: "닉네임1",
-      content: "첫 번째 댓글 내용입니다.",
-      timestamp: "2024. 10. 18 20:30",
-      depth: 0,
-      replies: [
-        {
-          username: "닉네임2",
-          content: "첫 번째 댓글의 답글입니다.",
-          timestamp: "2024. 10. 18 20:35",
-          depth: 1,
-        },
-      ],
-    },
-    {
-      username: "닉네임4",
-      content: "두 번째 댓글 내용입니다.",
-      timestamp: "2024. 10. 18 21:00",
-      depth: 0,
-    },
-  ];
+  if (isLoading) return <div>댓글을 불러오는 중...</div>;
+  if (error) return <div>댓글을 불러오는데 실패했습니다.</div>;
+
+  const buildCommentTree = (comments: CommentProps[]): CommentProps[] => {
+    const commentMap = new Map<string, CommentProps>();
+    comments.forEach((comment) =>
+      commentMap.set(comment.id, { ...comment, replies: [] })
+    );
+
+    const rootComments: CommentProps[] = [];
+    commentMap.forEach((comment) => {
+      if (!comment.parentId) {
+        rootComments.push(comment);
+      } else {
+        const parentComment = commentMap.get(comment.parentId);
+        if (parentComment) {
+          parentComment.replies = parentComment.replies || [];
+          parentComment.replies.push(comment);
+        }
+      }
+    });
+
+    return rootComments;
+  };
+
+  const commentTree = buildCommentTree(comments || []);
 
   return (
     <div className="max-w-3xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
       <h2 className="text-xl font-semibold mb-4">댓글</h2>
-      {comments.map((comment, index) => (
-        <Comment key={index} {...comment} />
+      {commentTree.map((comment) => (
+        <Comment key={comment.id} {...comment} />
       ))}
       <form onSubmit={handleSubmit} className="mt-6">
         <div className="flex items-center space-x-2">
