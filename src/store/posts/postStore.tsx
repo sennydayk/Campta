@@ -1,15 +1,5 @@
 import { create } from "zustand";
-import type { Post } from "@/app/posts/types";
-
-interface PostStore {
-  currentPost: Post | null;
-  error: string | null;
-  isLoading: boolean;
-  setError: (error: string | null) => void;
-  setCurrentPost: (post: Post | null) => void;
-  setLoading: (loading: boolean) => void;
-  resetState: () => void;
-}
+import { PostStore } from "./types";
 
 export const usePostStore = create<PostStore>((set) => ({
   currentPost: null,

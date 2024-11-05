@@ -3,25 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 import Button from "../common/ui/Button";
+import { PostFormProps } from "@/lib/posts/types";
 
-interface NewPostFormProps {
-  onSubmit: (
-    title: string,
-    content: string,
-    images: File[],
-    keepImages: string[]
-  ) => void;
-  initialTitle?: string;
-  initialContent?: string;
-  initialImages?: string[];
-}
-
-export function NewPostForm({
+export function PostForm({
   onSubmit,
   initialTitle = "",
   initialContent = "",
   initialImages = [],
-}: NewPostFormProps) {
+}: PostFormProps) {
   const [title, setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
   const [images, setImages] = useState<File[]>([]);

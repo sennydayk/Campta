@@ -1,13 +1,5 @@
 import { create } from "zustand";
-import { CommentProps } from "@/lib/comments/types";
-
-interface CommentStore {
-  comments: CommentProps[];
-  setComments: (comments: CommentProps[]) => void;
-  addComment: (comment: CommentProps) => void;
-  updateComment: (id: string, content: string) => void;
-  deleteComment: (id: string) => void;
-}
+import { CommentStore } from "./types";
 
 export const useCommentStore = create<CommentStore>((set) => ({
   comments: [],

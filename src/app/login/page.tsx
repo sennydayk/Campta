@@ -10,7 +10,10 @@ import { useAuthStore } from "@/store/auth/authStore";
 import { FormInput } from "@/components/common/ui/FormInput";
 import { RememberMe } from "@/components/auth/login/RememberMe";
 import { loginUser } from "../../api/auth/login";
-import type { LoginCredentials, LoginResponse } from "./types";
+import type {
+  LoginCredentials,
+  LoginResponse,
+} from "../../lib/auth/login/types";
 export default function LoginForm() {
   const [formData, setFormData] = useState({
     email: "",

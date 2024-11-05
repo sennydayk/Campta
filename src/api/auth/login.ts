@@ -1,4 +1,4 @@
-import { LoginCredentials, LoginResponse } from "../../app/login/types";
+import { LoginCredentials, LoginResponse } from "../../lib/auth/login/types";
 
 export async function loginUser(
   credentials: LoginCredentials

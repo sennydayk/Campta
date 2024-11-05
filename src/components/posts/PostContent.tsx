@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Bookmark, Trash2 } from "lucide-react";
-import { Post } from "@/app/posts/types";
+import { Post } from "@/lib/posts/types";
 import { ImageSlider } from "./ImageSlider";
 import { useRouter } from "next/navigation";
 

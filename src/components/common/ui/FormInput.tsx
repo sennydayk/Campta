@@ -1,4 +1,4 @@
-import type { FormInputProps } from "@/app/signup/types";
+import type { FormInputProps } from "@/lib/auth/signup/types";
 
 export function FormInput({
   id,

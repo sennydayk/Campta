@@ -1,7 +1,7 @@
 "use client";
 
 import { ProfileContent } from "@/components/profile/ProfileContent";
-import type { ProfileData } from "./types";
+import type { ProfileData } from "../../lib/profile/types";
 import { Footer } from "@/components/common/ui/footer/Footer";
 
 const mockProfileData: ProfileData = {
@@ -15,8 +15,10 @@ const mockProfileData: ProfileData = {
 
 export default function Profile() {
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <ProfileContent profileData={mockProfileData} />
+    <div className="flex flex-col min-h-screen bg-gray-100">
+      <main className="flex justify-center items-center">
+        <ProfileContent profileData={mockProfileData} />
+      </main>
       <Footer />
     </div>
   );

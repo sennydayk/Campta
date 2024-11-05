@@ -9,7 +9,10 @@ import { useAuthStore } from "@/store/auth/authStore";
 import { ProfileImageUploader } from "@/components/auth/signup/ProfileImageUploader";
 import { FormInput } from "@/components/common/ui/FormInput";
 import { registerUser } from "../../api/auth/signup";
-import type { RegisterUserData, RegisterResponse } from "./types";
+import type {
+  RegisterUserData,
+  RegisterResponse,
+} from "../../lib/auth/signup/types";
 
 // FormData 타입 정의
 type FormData = {

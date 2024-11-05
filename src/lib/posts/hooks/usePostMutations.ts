@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPost } from "@/api/posts/posts";
 import { updatePost, deletePost } from "@/api/posts/posts";
 import { usePostStore } from "@/store/posts/postStore";
-import type { Post, PostResponse, ApiError } from "@/app/posts/types";
+import type { Post, PostResponse, ApiError } from "../types";
 
 export function usePostMutations() {
   const queryClient = useQueryClient();

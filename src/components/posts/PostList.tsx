@@ -7,7 +7,7 @@ import ContentBox from "@/components/common/ui/ContentBox";
 import WriteButton from "@/components/common/ui/WriteButton";
 import { Footer } from "@/components/common/ui/footer/Footer";
 import { fetchPosts } from "@/lib/api";
-import { Post } from "@/app/posts/types";
+import { Post } from "@/lib/posts/types";
 
 export default function PostList() {
   const { ref, inView } = useInView();
