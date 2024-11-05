@@ -1,4 +1,4 @@
-import type { RememberMeProps } from "@/app/login/types";
+import type { RememberMeProps } from "@/lib/auth/login/types";
 
 export function RememberMe({ checked, onChange }: RememberMeProps) {
   return (

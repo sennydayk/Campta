@@ -1,7 +1,7 @@
 "use client";
 
 import { ProfileContent } from "@/components/profile/ProfileContent";
-import type { ProfileData } from "./types";
+import type { ProfileData } from "../../lib/profile/types";
 import { Footer } from "@/components/common/ui/footer/Footer";
 
 const mockProfileData: ProfileData = {

@@ -1,4 +1,4 @@
-import { Post } from "../../app/posts/types";
+import { Post } from "@/lib/posts/types";
 
 export async function fetchPost(id: string): Promise<Post> {
   const response = await fetch(`/api/posts/${id}`);

@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import Image from "next/image";
-import type { ProfileImageUploaderProps } from "@/app/signup/types";
+import type { ProfileImageUploaderProps } from "@/lib/auth/signup/types";
 
 export function ProfileImageUploader({
   profileImage,

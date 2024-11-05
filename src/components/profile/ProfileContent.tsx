@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ProfileImage } from "./ProfileImage";
 import { ProfileInfo } from "./ProfileInfo";
 import { ProfileDetails } from "./ProfileDetails";
-import type { ProfileData } from "@/app/profile/types";
+import type { ProfileData } from "@/lib/profile/types";
 
 interface ProfileContentProps {
   profileData: ProfileData;

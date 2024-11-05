@@ -1,7 +1,7 @@
 import type {
   RegisterUserData,
   RegisterResponse,
-} from "../../app/signup/types";
+} from "../../lib/auth/signup/types";
 
 export async function registerUser(
   userData: RegisterUserData

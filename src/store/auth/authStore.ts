@@ -1,22 +1,7 @@
 import Cookies from "js-cookie";
 import { create } from "zustand";
 import { auth } from "@/firebase/firebaseConfig";
-
-interface IUser {
-  uid: string;
-  email: string;
-  nickName: string;
-}
-
-interface AuthStore {
-  isLogin: boolean;
-  user: IUser | null;
-  accessToken: string | null;
-  setUser: (user: IUser) => void;
-  setAccessToken: (token: string) => void;
-  checkLoginStatus: () => void;
-  logout: () => void;
-}
+import { IUser, AuthStore } from "./types";
 
 export const useAuthStore = create<AuthStore>((set) => ({
   isLogin: !!Cookies.get("accessToken"),

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useParams } from "next/navigation";
-import { NewPostForm } from "@/components/newpost/NewPostForm";
+import { PostForm } from "@/components/posts/PostForm";
 import { usePostStore } from "@/store/posts/postStore";
 import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
 import { usePostQuery } from "@/lib/posts/hooks/usePostQuery";
@@ -84,7 +84,7 @@ export default function EditPostPage() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-white shadow-sm rounded-lg p-6">
           <h1 className="text-3xl font-bold text-gray-900 mb-8">게시글 수정</h1>
-          <NewPostForm
+          <PostForm
             onSubmit={handleSubmit}
             initialTitle={currentPost.title}
             initialContent={currentPost.content}
