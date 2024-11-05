@@ -6,7 +6,7 @@ import { usePostStore } from "@/store/posts/postStore";
 import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
 import { usePostQuery } from "@/lib/posts/hooks/usePostQuery";
 import { useEffect, useState } from "react";
-import { Post } from "../../types";
+import { Post } from "@/lib/posts/types";
 
 export default function EditPostPage() {
   const router = useRouter();

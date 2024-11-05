@@ -12,15 +12,17 @@ export function ProfileContent({ profileData }: ProfileContentProps) {
   const [isEditing, setIsEditing] = useState(false);
 
   return (
-    <div className="bg-white shadow rounded-lg p-8">
+    <div className="bg-white shadow rounded-lg p-8 w-full max-w-4xl m-4">
       <div className="flex items-center mb-8">
         <ProfileImage imageUrl={profileData.imageUrl} />
-        <ProfileInfo
-          nickname={profileData.nickname}
-          followers={profileData.followers}
-          following={profileData.following}
-          onEdit={() => setIsEditing(!isEditing)}
-        />
+        <div className="ml-8 flex-grow">
+          <ProfileInfo
+            nickname={profileData.nickname}
+            followers={profileData.followers}
+            following={profileData.following}
+            onEdit={() => setIsEditing(!isEditing)}
+          />
+        </div>
       </div>
       <ProfileDetails
         name={profileData.name}
