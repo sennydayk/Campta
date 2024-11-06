@@ -1,23 +1,31 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import SearchBar from "./SearchBar";
 import { useAuthStore } from "@/store/auth/authStore";
-import { useEffect } from "react";
 
 export default function Header() {
   const { isLogin, logout, checkLoginStatus } = useAuthStore();
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     checkLoginStatus();
+    setIsMounted(true);
   }, [checkLoginStatus]);
 
   const handleLogout = () => {
-    const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
-    if (confirmLogout) {
-      logout();
+    if (typeof window !== "undefined") {
+      const confirmLogout = window.confirm("로그아웃 하시겠습니까?");
+      if (confirmLogout) {
+        logout();
+      }
     }
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <header className="bg-white shadow">
