@@ -5,6 +5,9 @@ export interface LoginCredentials {
 
 export interface LoginResponse {
   user: {
+    birthDate: string;
+    photoURL: string;
+    displayname: string;
     uid: string;
     email: string;
     nickName: string;

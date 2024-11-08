@@ -48,7 +48,8 @@ export default function LoginForm() {
       setUser({
         uid: data.user.uid,
         email: data.user.email ?? "",
-        nickName: data.user.nickName ?? "",
+        nickname: data.user.nickName ?? "",
+        profileImg: data.user.photoURL ?? "",
       });
 
       if (rememberMe) {

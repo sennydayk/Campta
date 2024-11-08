@@ -18,8 +18,6 @@ export function ProfileContent({ profileData }: ProfileContentProps) {
         <div className="ml-8 flex-grow">
           <ProfileInfo
             nickname={profileData.nickname}
-            followers={profileData.followers}
-            following={profileData.following}
             onEdit={() => setIsEditing(!isEditing)}
           />
         </div>

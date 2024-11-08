@@ -11,7 +11,8 @@ export interface RegisterResponse {
   user: {
     uid: string;
     email: string;
-    nickName: string;
+    nickname: string;
+    profileImg: string;
   };
   accessToken: string;
 }

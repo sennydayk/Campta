@@ -3,16 +3,16 @@ import { User } from "firebase/auth";
 export interface IUser {
   uid: string;
   email: string;
-  nickName: string;
+  nickname: string;
+  profileImg: string;
 }
 
 export interface AuthStore {
   isLogin: boolean;
   user: IUser | null;
-  accessToken: string | null;
   setUser: (user: IUser) => void;
-  setAccessToken: (token: string) => void;
   checkLoginStatus: () => void;
+  setIsLogin: (isLogin: boolean) => void;
   logout: () => void;
 }
 

@@ -6,7 +6,7 @@ import type {
 export async function registerUser(
   userData: RegisterUserData
 ): Promise<RegisterResponse> {
-  const response = await fetch("/api/auth/register", {
+  const response = await fetch("/api/auth/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

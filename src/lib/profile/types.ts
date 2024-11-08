@@ -1,9 +1,8 @@
 export interface ProfileData {
+  uid: string;
   nickname: string;
   name: string;
   email: string;
   birthDate: string;
-  followers: number;
-  following: number;
-  imageUrl?: string;
+  imageUrl: string;
 }

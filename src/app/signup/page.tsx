@@ -13,6 +13,7 @@ import type {
   RegisterUserData,
   RegisterResponse,
 } from "../../lib/auth/signup/types";
+import { data } from "autoprefixer";
 
 // FormData 타입 정의
 type FormData = {
@@ -37,13 +38,12 @@ export default function SignupForm() {
   });
 
   const router = useRouter();
-  const { setUser, setAccessToken } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   const mutation = useMutation<RegisterResponse, Error, RegisterUserData>({
     mutationFn: registerUser,
     onSuccess: (data) => {
       setUser(data.user);
-      setAccessToken(data.accessToken);
       alert(
         `${formData.name}님, 회원가입이 완료되었습니다. 홈 페이지로 이동합니다.`
       );
