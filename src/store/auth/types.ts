@@ -3,8 +3,10 @@ import { User } from "firebase/auth";
 export interface IUser {
   uid: string;
   email: string;
+  name: string;
   nickname: string;
-  profileImg: string;
+  birthdate: string;
+  profileImg: string | null;
 }
 
 export interface AuthStore {

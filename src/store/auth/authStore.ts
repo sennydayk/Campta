@@ -1,8 +1,9 @@
 import Cookies from "js-cookie";
 import { create } from "zustand";
-import { auth } from "@/firebase/firebaseConfig";
+import { auth, db } from "@/firebase/firebaseConfig";
 import { IUser, AuthStore } from "./types";
 import { persist } from "zustand/middleware";
+import { doc, getDoc, getDocs } from "firebase/firestore";
 
 export const useAuthStore = create(
   persist<AuthStore>(
@@ -14,17 +15,25 @@ export const useAuthStore = create(
         if (token) {
           set({ isLogin: true });
           try {
-            const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+            const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
               if (currentUser) {
-                set({
-                  user: {
-                    uid: currentUser.uid,
-                    email: currentUser.email ?? "",
-                    nickname: currentUser.displayName ?? "",
-                    profileImg: currentUser.photoURL ?? "",
-                  },
-                  isLogin: true,
-                });
+                // Firestore에서 추가 사용자 정보 가져오기
+                const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+                if (userDoc.exists()) {
+                  const userData = userDoc.data();
+                  console.log("Firestore에서 가져온 사용자 데이터:", userData);
+                  set({
+                    user: {
+                      uid: currentUser.uid,
+                      email: currentUser.email ?? "",
+                      name: userData.name || "",
+                      nickname: userData.nickname || "",
+                      birthdate: userData.birthdate || "",
+                      profileImg: userData.photoURL || "",
+                    },
+                    isLogin: true,
+                  });
+                }
               } else {
                 set({
                   user: null,

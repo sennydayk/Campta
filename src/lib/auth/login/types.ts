@@ -5,12 +5,13 @@ export interface LoginCredentials {
 
 export interface LoginResponse {
   user: {
-    birthDate: string;
+    birthdate: string;
     photoURL: string;
-    displayname: string;
+    displayName: string;
     uid: string;
     email: string;
-    nickName: string;
+    nickname: string;
+    name: string;
   };
   token: string;
 }

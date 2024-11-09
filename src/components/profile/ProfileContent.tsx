@@ -14,7 +14,7 @@ export function ProfileContent({ profileData }: ProfileContentProps) {
   return (
     <div className="bg-white shadow rounded-lg p-8 w-full max-w-4xl m-4">
       <div className="flex items-center mb-8">
-        <ProfileImage imageUrl={profileData.imageUrl} />
+        <ProfileImage imageUrl={profileData.profileImg} />
         <div className="ml-8 flex-grow">
           <ProfileInfo
             nickname={profileData.nickname}
@@ -25,7 +25,7 @@ export function ProfileContent({ profileData }: ProfileContentProps) {
       <ProfileDetails
         name={profileData.name}
         email={profileData.email}
-        birthDate={profileData.birthDate}
+        birthDate={profileData.birthdate}
       />
     </div>
   );

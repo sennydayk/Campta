@@ -19,7 +19,7 @@ export async function POST(request: Request) {
       user: {
         uid: user.uid,
         email: user.email,
-        nickName: user.displayName,
+        nickname: user.displayName,
       },
       token,
     });

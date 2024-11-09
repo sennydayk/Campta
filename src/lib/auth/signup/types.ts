@@ -4,14 +4,16 @@ export interface RegisterUserData {
   password: string;
   nickname: string;
   birthdate: string;
-  profileImage: string | null;
+  profileImg: string | null;
 }
 
 export interface RegisterResponse {
   user: {
     uid: string;
     email: string;
+    name: string;
     nickname: string;
+    birthdate: string;
     profileImg: string;
   };
   accessToken: string;

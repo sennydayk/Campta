@@ -3,6 +3,6 @@ export interface ProfileData {
   nickname: string;
   name: string;
   email: string;
-  birthDate: string;
-  imageUrl: string;
+  birthdate: string;
+  profileImg: string;
 }
