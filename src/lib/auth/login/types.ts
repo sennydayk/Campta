@@ -6,7 +6,7 @@ export interface LoginCredentials {
 export interface LoginResponse {
   user: {
     birthdate: string;
-    photoURL: string;
+    profileImg: string;
     displayName: string;
     uid: string;
     email: string;

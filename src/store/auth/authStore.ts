@@ -29,7 +29,7 @@ export const useAuthStore = create(
                       name: userData.name || "",
                       nickname: userData.nickname || "",
                       birthdate: userData.birthdate || "",
-                      profileImg: userData.photoURL || "",
+                      profileImg: userData.profileImg || "",
                     },
                     isLogin: true,
                   });
