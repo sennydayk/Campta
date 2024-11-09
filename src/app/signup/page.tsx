@@ -87,7 +87,7 @@ export default function SignupForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-center space-x-6">
             <ProfileImageUploader
-              profileImage={formData.profileImg}
+              profileImg={formData.profileImg}
               onImageChange={(image) =>
                 setFormData((prev) => ({ ...prev, profileImg: image }))
               }

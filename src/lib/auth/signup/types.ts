@@ -20,7 +20,7 @@ export interface RegisterResponse {
 }
 
 export interface ProfileImageUploaderProps {
-  profileImage: string | null;
+  profileImg: string | null;
   onImageChange: (image: string | null) => void;
 }
 

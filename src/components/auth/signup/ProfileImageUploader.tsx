@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { ProfileImageUploaderProps } from "@/lib/auth/signup/types";
 
 export function ProfileImageUploader({
-  profileImage,
+  profileImg,
   onImageChange,
 }: ProfileImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,9 +26,9 @@ export function ProfileImageUploader({
         onClick={() => fileInputRef.current?.click()}
         style={{ width: "96px", height: "96px" }}
       >
-        {profileImage ? (
+        {profileImg ? (
           <Image
-            src={profileImage}
+            src={profileImg}
             alt="Profile"
             width={96}
             height={96}

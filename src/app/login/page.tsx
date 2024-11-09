@@ -60,18 +60,15 @@ export default function LoginForm() {
       console.log("User data before setting in store:", userData);
       setUser(userData);
       console.log("User data set in store:", data.user);
-      console.log("name", data.user.name);
-      console.log("birth", data.user.birthdate);
-      console.log("img", data.user.photoURL);
 
       if (rememberMe) {
         localStorage.setItem("savedEmail", formData.email);
       } else {
         localStorage.removeItem("savedEmail");
       }
-      console.log("Calling checkLoginStatus");
+
       await checkLoginStatus();
-      console.log("checkLoginStatus completed");
+
       console.log("로그인 완료", { email: formData.email, rememberMe });
       alert("로그인이 완료되었습니다. 홈으로 이동합니다");
       router.push("/");
