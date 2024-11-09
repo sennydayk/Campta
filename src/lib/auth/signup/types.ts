@@ -4,20 +4,23 @@ export interface RegisterUserData {
   password: string;
   nickname: string;
   birthdate: string;
-  profileImage: string | null;
+  profileImg: string | null;
 }
 
 export interface RegisterResponse {
   user: {
     uid: string;
     email: string;
-    nickName: string;
+    name: string;
+    nickname: string;
+    birthdate: string;
+    profileImg: string;
   };
   accessToken: string;
 }
 
 export interface ProfileImageUploaderProps {
-  profileImage: string | null;
+  profileImg: string | null;
   onImageChange: (image: string | null) => void;
 }
 

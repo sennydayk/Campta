@@ -33,23 +33,32 @@ export default function LoginForm() {
       setFormData((prev) => ({ ...prev, email: savedEmail }));
       setRememberMe(true);
     }
-  }, [isLogin, router]);
+  }, [isLogin, router, checkLoginStatus]);
 
   const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
     mutationFn: loginUser,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
+      // 디버깅
+      console.log("Full API response:", JSON.stringify(data, null, 2));
+
       Cookies.set("accessToken", data.token, {
         expires: 7,
         path: "/",
         sameSite: "strict",
         secure: process.env.NODE_ENV === "production",
       });
-
-      setUser({
+      const userData = {
         uid: data.user.uid,
         email: data.user.email ?? "",
-        nickName: data.user.nickName ?? "",
-      });
+        nickname: data.user.nickname ?? "",
+        profileImg: data.user.photoURL ?? "",
+        name: data.user.name ?? "",
+        birthdate: data.user.birthdate ?? "",
+      };
+
+      console.log("User data before setting in store:", userData);
+      setUser(userData);
+      console.log("User data set in store:", data.user);
 
       if (rememberMe) {
         localStorage.setItem("savedEmail", formData.email);
@@ -57,7 +66,8 @@ export default function LoginForm() {
         localStorage.removeItem("savedEmail");
       }
 
-      checkLoginStatus();
+      await checkLoginStatus();
+
       console.log("로그인 완료", { email: formData.email, rememberMe });
       alert("로그인이 완료되었습니다. 홈으로 이동합니다");
       router.push("/");

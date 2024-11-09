@@ -1,10 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    middleware: true,
-  },
   images: {
-    domains: ["firebasestorage.googleapis.com"],
     remotePatterns: [
       {
         protocol: "https",

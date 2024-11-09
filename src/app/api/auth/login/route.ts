@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/firebase/firebaseConfig";
+import { auth, db } from "@/firebase/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
 export async function POST(request: Request) {
   try {
@@ -15,11 +16,18 @@ export async function POST(request: Request) {
 
     const token = await user.getIdToken();
 
+    // Firestore에서 추가 사용자 정보 가져오기
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    const userData = userDoc.exists() ? userDoc.data() : {};
+
     return NextResponse.json({
       user: {
         uid: user.uid,
         email: user.email,
-        nickName: user.displayName,
+        nickname: user.displayName || userData.nickname || "",
+        name: userData.name || "",
+        birthdate: userData.birthdate || "",
+        profileImg: user.photoURL || userData.profileImg || "",
       },
       token,
     });

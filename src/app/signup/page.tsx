@@ -22,7 +22,7 @@ type FormData = {
   confirmPassword: string;
   nickname: string;
   birthdate: string;
-  profileImage: string | null;
+  profileImg: string | null;
 };
 
 export default function SignupForm() {
@@ -33,17 +33,16 @@ export default function SignupForm() {
     confirmPassword: "",
     nickname: "",
     birthdate: "",
-    profileImage: null,
+    profileImg: null,
   });
 
   const router = useRouter();
-  const { setUser, setAccessToken } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   const mutation = useMutation<RegisterResponse, Error, RegisterUserData>({
     mutationFn: registerUser,
     onSuccess: (data) => {
       setUser(data.user);
-      setAccessToken(data.accessToken);
       alert(
         `${formData.name}님, 회원가입이 완료되었습니다. 홈 페이지로 이동합니다.`
       );
@@ -68,7 +67,7 @@ export default function SignupForm() {
       password: formData.password,
       nickname: formData.nickname,
       birthdate: formData.birthdate,
-      profileImage: formData.profileImage,
+      profileImg: formData.profileImg,
     };
     mutation.mutate(userData);
   };
@@ -87,9 +86,9 @@ export default function SignupForm() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex items-center space-x-6">
             <ProfileImageUploader
-              profileImage={formData.profileImage}
+              profileImg={formData.profileImg}
               onImageChange={(image) =>
-                setFormData((prev) => ({ ...prev, profileImage: image }))
+                setFormData((prev) => ({ ...prev, profileImg: image }))
               }
             />
             <div className="flex-grow">
