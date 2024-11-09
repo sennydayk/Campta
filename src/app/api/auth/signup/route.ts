@@ -5,7 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import { NextResponse } from "next/server";
 
-const MAX_PROFILE_URL_LENGTH = 1024; // Firebase의 최대 URL 길이
+// const MAX_PROFILE_URL_LENGTH = 1024; // Firebase의 최대 URL 길이
 
 export async function POST(request: Request) {
   console.log("회원가입 요청 시작");

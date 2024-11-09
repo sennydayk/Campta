@@ -13,7 +13,6 @@ import type {
   RegisterUserData,
   RegisterResponse,
 } from "../../lib/auth/signup/types";
-import { data } from "autoprefixer";
 
 // FormData 타입 정의
 type FormData = {

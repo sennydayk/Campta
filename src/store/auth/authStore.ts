@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { auth, db } from "@/firebase/firebaseConfig";
 import { IUser, AuthStore } from "./types";
 import { persist } from "zustand/middleware";
-import { doc, getDoc, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
 export const useAuthStore = create(
   persist<AuthStore>(
