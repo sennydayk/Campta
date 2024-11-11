@@ -6,10 +6,14 @@ import { useEffect } from "react";
 import ContentBox from "@/components/common/ui/ContentBox";
 import WriteButton from "@/components/common/ui/WriteButton";
 import { Footer } from "@/components/common/ui/footer/Footer";
-import { fetchPosts } from "@/lib/api";
+import { fetchPosts, POSTS_PER_PAGE } from "@/lib/api";
 import { Post } from "@/lib/posts/types";
 
-export default function PostList() {
+interface PostListProps {
+  initialPosts: Post[];
+}
+
+export default function PostList({ initialPosts }: PostListProps) {
   const { ref, inView } = useInView();
 
   const {
@@ -23,7 +27,7 @@ export default function PostList() {
     queryKey: ["posts"],
     queryFn: ({ pageParam = 1 }) => fetchPosts(pageParam),
     getNextPageParam: (lastPage, pages) => {
-      return lastPage.length === 10 ? pages.length + 1 : undefined;
+      return lastPage.length === POSTS_PER_PAGE ? pages.length + 1 : undefined;
     },
     initialPageParam: 1,
   });
