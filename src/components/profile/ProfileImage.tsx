@@ -1,12 +1,18 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ProfileImageProps {
   imageUrl?: string;
 }
 
 export function ProfileImage({ imageUrl }: ProfileImageProps) {
-  const [imgSrc, setImgSrc] = useState(imageUrl || "/images/user.png");
+  const [imgSrc, setImgSrc] = useState("/images/user.png");
+
+  useEffect(() => {
+    if (imageUrl) {
+      setImgSrc(imageUrl);
+    }
+  });
 
   return (
     <div className="flex justify-center w-28 h-28 rounded-full overflow-hidden mx-auto">

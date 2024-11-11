@@ -10,7 +10,6 @@ export default function Profile() {
   const user = useStore(useAuthStore, (state) => {
     return state.user;
   });
-
   const ProfileData: ProfileData = {
     nickname: user?.nickname ?? "",
     email: user?.email ?? "",
