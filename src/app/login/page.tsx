@@ -51,7 +51,7 @@ export default function LoginForm() {
         uid: data.user.uid,
         email: data.user.email ?? "",
         nickname: data.user.nickname ?? "",
-        profileImg: data.user.photoURL ?? "",
+        profileImg: data.user.profileImg ?? "",
         name: data.user.name ?? "",
         birthdate: data.user.birthdate ?? "",
       };

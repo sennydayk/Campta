@@ -27,7 +27,7 @@ export async function POST(request: Request) {
         nickname: user.displayName || userData.nickname || "",
         name: userData.name || "",
         birthdate: userData.birthdate || "",
-        profileImg: user.photoURL || userData.profileImg || "",
+        profileImg: userData.profileImg || "",
       },
       token,
     });
