@@ -9,10 +9,6 @@ import { Footer } from "@/components/common/ui/footer/Footer";
 import { fetchPosts, POSTS_PER_PAGE } from "@/lib/api";
 import { Post } from "@/lib/posts/types";
 
-interface PostListProps {
-  initialPosts: Post[];
-}
-
 export default function PostList() {
   const { ref, inView } = useInView();
 

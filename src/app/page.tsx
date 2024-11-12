@@ -9,7 +9,6 @@ import {
 
 export default async function Home() {
   const queryClient = new QueryClient();
-  const initialPosts = await fetchPosts(1);
 
   await queryClient.prefetchInfiniteQuery({
     queryKey: ["posts"],
