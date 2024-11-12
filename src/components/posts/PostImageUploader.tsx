@@ -14,7 +14,7 @@ export function PostImageUploader({
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
 
   useEffect(() => {
-    // Create preview URLs for initial images
+    // 첫 이미지 미리보기
     setPreviewUrls(initialImages);
   }, [initialImages]);
 
@@ -23,7 +23,7 @@ export function PostImageUploader({
       const newFiles = Array.from(e.target.files);
       setImages((prevImages) => [...prevImages, ...newFiles]);
 
-      // Create preview URLs for new images
+      // 새로운 이미지 미리보기 url
       const newUrls = newFiles.map((file) => URL.createObjectURL(file));
       setPreviewUrls((prevUrls) => [...prevUrls, ...newUrls]);
     }

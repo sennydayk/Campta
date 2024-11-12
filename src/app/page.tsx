@@ -25,7 +25,7 @@ export default async function Home() {
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <PostList initialPosts={initialPosts} />
+        <PostList />
       </HydrationBoundary>
     </main>
   );

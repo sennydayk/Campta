@@ -13,7 +13,7 @@ interface PostListProps {
   initialPosts: Post[];
 }
 
-export default function PostList({ initialPosts }: PostListProps) {
+export default function PostList() {
   const { ref, inView } = useInView();
 
   const {
