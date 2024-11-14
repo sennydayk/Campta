@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
-import Cookies from "js-cookie";
 import Button from "@/components/common/ui/Button";
 import { useAuthStore } from "@/store/auth/authStore";
 import { FormInput } from "@/components/common/ui/FormInput";
@@ -14,6 +13,7 @@ import type {
   LoginCredentials,
   LoginResponse,
 } from "../../lib/auth/login/types";
+
 export default function LoginForm() {
   const [formData, setFormData] = useState({
     email: "",
@@ -21,19 +21,14 @@ export default function LoginForm() {
   });
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
-  const { isLogin, setUser, checkLoginStatus } = useAuthStore();
+  const { login, setUser, checkLoginStatus } = useAuthStore();
 
-  useEffect(() => {
-    checkLoginStatus();
-    if (isLogin) {
-      router.push("/");
-    }
-    const savedEmail = localStorage.getItem("savedEmail");
-    if (savedEmail) {
-      setFormData((prev) => ({ ...prev, email: savedEmail }));
-      setRememberMe(true);
-    }
-  }, [isLogin, router, checkLoginStatus]);
+  //   const savedEmail = localStorage.getItem("savedEmail");
+  //   if (savedEmail) {
+  //     setFormData((prev) => ({ ...prev, email: savedEmail }));
+  //     setRememberMe(true);
+  //   }
+  // }, [isLogin, router, checkLoginStatus]);
 
   const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
     mutationFn: loginUser,
@@ -41,12 +36,8 @@ export default function LoginForm() {
       // 디버깅
       console.log("Full API response:", JSON.stringify(data, null, 2));
 
-      Cookies.set("accessToken", data.token, {
-        expires: 7,
-        path: "/",
-        sameSite: "strict",
-        secure: process.env.NODE_ENV === "production",
-      });
+      await login(data.user.uid);
+
       const userData = {
         uid: data.user.uid,
         email: data.user.email ?? "",

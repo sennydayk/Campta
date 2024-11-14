@@ -7,6 +7,7 @@ import { useStore } from "@/lib/auth/hooks/useStore";
 import { useAuthStore } from "@/store/auth/authStore";
 
 export default function Profile() {
+
   const user = useStore(useAuthStore, (state) => {
     return state.user;
   });
