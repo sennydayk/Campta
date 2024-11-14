@@ -1,4 +1,4 @@
-import { auth, db, storage } from "@/firebase/firebaseConfig";
+import { auth, db, storage } from "@/lib/firebase/firebaseConfig";
 import { IUser } from "@/store/auth/types";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";

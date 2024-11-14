@@ -12,6 +12,7 @@ export interface IUser {
 export interface AuthStore {
   isLogin: boolean;
   user: IUser | null;
+  login: (uid: string) => Promise<void>;
   setUser: (user: IUser) => void;
   checkLoginStatus: () => void;
   setIsLogin: (isLogin: boolean) => void;
