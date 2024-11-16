@@ -2,7 +2,7 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { PostContent } from "@/components/posts/PostContent";
-import { CommentSection } from "@/components/posts/CommentSection";
+import { CommentSection } from "@/components/comments/CommentSection";
 import { AuthorInfo } from "@/components/posts/AuthorInfo";
 import { usePostStore } from "@/store/posts/postStore";
 import { usePostQuery } from "@/lib/posts/hooks/usePostQuery";
