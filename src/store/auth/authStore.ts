@@ -17,7 +17,7 @@ export const useAuthStore = create(
       getIdToken: () => Promise<string | null>;
     }
   >(
-    (set, get) => ({
+    (set) => ({
       isLogin: !!Cookies.get("accessToken"),
       user: null,
       firebaseUser: null,

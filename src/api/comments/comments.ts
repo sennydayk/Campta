@@ -1,4 +1,4 @@
-import { CommentProps, UserProfile } from "@/lib/comments/types";
+import { CommentProps } from "@/lib/comments/types";
 
 const API_URL = "/api/comments";
 

@@ -3,7 +3,6 @@ import { Bookmark, Trash2, Edit } from "lucide-react";
 import { Post } from "@/lib/posts/types";
 import { ImageSlider } from "./ImageSlider";
 import { useRouter } from "next/navigation";
-import { IUser } from "@/store/auth/types";
 import { useAuthStore } from "@/store/auth/authStore";
 
 interface PostContentProps {

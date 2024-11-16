@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { commentApi } from "@/api/comments/comments";
 import Button from "@/components/common/ui/Button";
-import { CommentProps, UserProfile } from "@/lib/comments/types";
+import { CommentProps } from "@/lib/comments/types";
 import Image from "next/image";
 import { useAuthStore } from "@/store/auth/authStore";
 

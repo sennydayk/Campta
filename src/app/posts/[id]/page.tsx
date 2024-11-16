@@ -8,7 +8,6 @@ import { usePostStore } from "@/store/posts/postStore";
 import { usePostQuery } from "@/lib/posts/hooks/usePostQuery";
 import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
 import { useEffect } from "react";
-import { useAuthStore } from "@/store/auth/authStore";
 
 export default function PostDetailPage() {
   const router = useRouter();

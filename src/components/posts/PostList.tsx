@@ -44,7 +44,7 @@ export default function PostList() {
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data?.pages.flatMap((group, i) =>
+        {data?.pages.flatMap((group) =>
           group.map((post: Post) => (
             <ContentBox
               key={post.id}
