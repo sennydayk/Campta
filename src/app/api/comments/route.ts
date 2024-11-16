@@ -11,14 +11,30 @@ import {
   getDocs,
   orderBy,
   Timestamp,
+  getDoc,
 } from "firebase/firestore";
 
 const COMMENTS_COLLECTION = "comments";
+const USERS_COLLECTION = "users";
 
-// 에러 응답 생성 함수
 const createErrorResponse = (message: string, status: number) => {
   return NextResponse.json({ error: message }, { status });
 };
+
+// 작성자 프로필 조회 로직
+async function fetchUserProfile(uid: string) {
+  const userRef = doc(db, USERS_COLLECTION, uid);
+  const userSnap = await getDoc(userRef);
+  if (userSnap.exists()) {
+    const userData = userSnap.data();
+    return {
+      uid,
+      nickname: userData.nickname || "Anonymous",
+      profileImg: userData.profileImg || "/default-avatar.png",
+    };
+  }
+  return null;
+}
 
 // 댓글 조회 로직
 export async function GET(request: NextRequest) {
@@ -37,12 +53,19 @@ export async function GET(request: NextRequest) {
       orderBy("timestamp", "asc")
     );
     const querySnapshot = await getDocs(q);
-    const comments = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      timestamp: doc.data().timestamp.toDate().toISOString(),
-      depth: doc.data().depth || 0,
-    }));
+    const comments = await Promise.all(
+      querySnapshot.docs.map(async (doc) => {
+        const commentData = doc.data();
+        const userProfile = await fetchUserProfile(commentData.uid);
+        return {
+          id: doc.id,
+          ...commentData,
+          timestamp: commentData.timestamp.toDate().toISOString(),
+          depth: commentData.depth || 0,
+          userProfile,
+        };
+      })
+    );
 
     return NextResponse.json(comments);
   } catch (error) {
@@ -54,15 +77,15 @@ export async function GET(request: NextRequest) {
 // 댓글 작성 로직
 export async function POST(request: NextRequest) {
   try {
-    const { postId, username, content, parentId, depth } = await request.json();
+    const { postId, uid, content, parentId, depth } = await request.json();
 
-    if (!postId || !username || !content) {
+    if (!postId || !uid || !content) {
       return createErrorResponse("Missing required fields", 400);
     }
 
     const newComment = {
       postId,
-      username,
+      uid,
       content,
       parentId: parentId || null,
       depth: depth || 0,
@@ -74,10 +97,13 @@ export async function POST(request: NextRequest) {
       newComment
     );
 
+    const userProfile = await fetchUserProfile(uid);
+
     return NextResponse.json({
       id: docRef.id,
       ...newComment,
       timestamp: newComment.timestamp.toDate().toISOString(),
+      userProfile,
     });
   } catch (error) {
     console.error("Error adding comment:", error);

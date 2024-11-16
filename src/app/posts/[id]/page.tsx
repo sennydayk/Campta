@@ -2,7 +2,8 @@
 
 import { useRouter, useParams } from "next/navigation";
 import { PostContent } from "@/components/posts/PostContent";
-import { CommentSection } from "@/components/posts/CommentSection";
+import { CommentSection } from "@/components/comments/CommentSection";
+import { AuthorInfo } from "@/components/posts/AuthorInfo";
 import { usePostStore } from "@/store/posts/postStore";
 import { usePostQuery } from "@/lib/posts/hooks/usePostQuery";
 import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
@@ -61,7 +62,12 @@ export default function PostDetailPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <main className="py-8">
-        <PostContent post={post} onDelete={handleDelete} />
+        <div className="max-w-4xl mx-auto bg-bg rounded-lg overflow-hidden">
+          <div className="p-6">
+            <AuthorInfo author={post.author} />
+            <PostContent post={post} onDelete={handleDelete} />
+          </div>
+        </div>
         <CommentSection postId={postId} />
       </main>
     </div>

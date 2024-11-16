@@ -1,4 +1,5 @@
 import { Post } from "@/lib/posts/types";
+import { useAuthStore } from "@/store/auth/authStore";
 
 export async function fetchPost(id: string): Promise<Post> {
   const response = await fetch(`/api/posts/${id}`);
@@ -10,8 +11,22 @@ export async function fetchPost(id: string): Promise<Post> {
 
 export async function createPost(postData: FormData) {
   try {
+    const authStore = useAuthStore.getState();
+    if (!authStore.isLogin) {
+      throw new Error("로그인이 필요합니다.");
+    }
+
+    const token = await authStore.getIdToken();
+    if (!token) {
+      throw new Error("인증 토큰을 가져올 수 없습니다.");
+    }
+
+    console.log("Client-side token:", token); // 디버깅용
     const response = await fetch("/api/posts", {
       method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
       body: postData,
     });
 
@@ -31,8 +46,17 @@ export async function createPost(postData: FormData) {
 }
 
 export async function deletePost(id: string): Promise<{ message: string }> {
+  const authStore = useAuthStore.getState();
+  if (!authStore.user) {
+    throw new Error("로그인이 필요합니다.");
+  }
+
+  const token = await authStore.getIdToken();
   const response = await fetch(`/api/posts/${id}`, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
   if (!response.ok) {
     throw new Error("게시글을 삭제하는데 실패했습니다.");
@@ -44,8 +68,17 @@ export async function updatePost(
   id: string,
   formData: FormData
 ): Promise<Post> {
+  const authStore = useAuthStore.getState();
+  if (!authStore.user) {
+    throw new Error("로그인이 필요합니다.");
+  }
+
+  const token = await authStore.getIdToken();
   const response = await fetch(`/api/posts/${id}`, {
     method: "PUT",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     body: formData,
   });
   if (!response.ok) {

@@ -5,6 +5,7 @@ export interface Post {
   images: string[];
   comments: number;
   scraps: number;
+  author?: Author;
 }
 
 export interface PostFormProps {
@@ -24,6 +25,12 @@ export interface PostResponse {
   title: string;
   content: string;
   images: string[];
+}
+
+export interface Author {
+  id: string;
+  nickname: string;
+  profileImg: string;
 }
 
 export type ApiError = {
