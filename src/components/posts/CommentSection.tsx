@@ -5,7 +5,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { commentApi } from "@/api/comments/comments";
 import Button from "@/components/common/ui/Button";
 import Comment from "@/components/posts/Comment";
-import { CommentProps } from "@/lib/comments/types";
+import { CommentProps, UserProfile } from "@/lib/comments/types";
+import { useAuthStore } from "@/store/auth/authStore";
 
 interface CommentSectionProps {
   postId: string;
@@ -14,6 +15,7 @@ interface CommentSectionProps {
 export function CommentSection({ postId }: CommentSectionProps) {
   const [newComment, setNewComment] = useState("");
   const queryClient = useQueryClient();
+  const { user } = useAuthStore();
 
   const {
     data: comments,
@@ -36,12 +38,20 @@ export function CommentSection({ postId }: CommentSectionProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    addCommentMutation.mutate({
-      postId,
-      username: "Current User", // 유저 정보로 대체해야 함
-      content: newComment,
-      depth: 0,
-    });
+    if (user) {
+      const userProfile: UserProfile = {
+        uid: user.uid,
+        nickname: user.nickname || "Anonymous",
+        profileImg: user.profileImg || "/default-avatar.png",
+      };
+      addCommentMutation.mutate({
+        postId,
+        uid: user.uid,
+        content: newComment,
+        depth: 0,
+        userProfile,
+      });
+    }
   };
 
   if (isLoading) return <div>댓글을 불러오는 중...</div>;
@@ -55,10 +65,10 @@ export function CommentSection({ postId }: CommentSectionProps) {
 
     const rootComments: CommentProps[] = [];
     commentMap.forEach((comment) => {
-      if (!comment.parentId) {
+      if (comment.depth === 0) {
         rootComments.push(comment);
       } else {
-        const parentComment = commentMap.get(comment.parentId);
+        const parentComment = comments.find((c) => c.id === comment.parentId);
         if (parentComment) {
           parentComment.replies = parentComment.replies || [];
           parentComment.replies.push(comment);
@@ -77,18 +87,24 @@ export function CommentSection({ postId }: CommentSectionProps) {
       {commentTree.map((comment) => (
         <Comment key={comment.id} {...comment} />
       ))}
-      <form onSubmit={handleSubmit} className="mt-6">
-        <div className="flex items-center space-x-2">
-          <input
-            type="text"
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글 내용을 입력해주세요."
-            className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-main"
-          />
-          <Button type="submit" label="작성하기" />
+      {user ? (
+        <form onSubmit={handleSubmit} className="mt-6">
+          <div className="flex items-center space-x-2">
+            <input
+              type="text"
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              placeholder="댓글 내용을 입력해주세요."
+              className="flex-grow px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-main"
+            />
+            <Button type="submit" label="작성하기" />
+          </div>
+        </form>
+      ) : (
+        <div className="mt-6 text-center text-gray-500">
+          댓글을 작성하려면 로그인이 필요합니다.
         </div>
-      </form>
+      )}
     </div>
   );
 }
