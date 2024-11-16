@@ -8,6 +8,7 @@ import { usePostStore } from "@/store/posts/postStore";
 import { usePostQuery } from "@/lib/posts/hooks/usePostQuery";
 import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
 import { useEffect } from "react";
+import { useAuthStore } from "@/store/auth/authStore";
 
 export default function PostDetailPage() {
   const router = useRouter();
@@ -62,7 +63,6 @@ export default function PostDetailPage() {
   return (
     <div className="min-h-screen bg-gray-100">
       <main className="py-8">
-        {/* 스타일 수정 필요 */}
         <div className="max-w-4xl mx-auto bg-bg rounded-lg overflow-hidden">
           <div className="p-6">
             <AuthorInfo author={post.author} />

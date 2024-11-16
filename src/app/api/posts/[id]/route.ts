@@ -42,7 +42,7 @@ export async function GET(
         ...postData,
         author: authorData
           ? {
-              id: authorData.id,
+              id: authorSnap.id,
               nickname: authorData.nickname || "",
               profileImg: authorData.profileImg || "",
             }

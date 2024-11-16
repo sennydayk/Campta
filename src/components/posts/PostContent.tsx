@@ -4,18 +4,20 @@ import { Post } from "@/lib/posts/types";
 import { ImageSlider } from "./ImageSlider";
 import { useRouter } from "next/navigation";
 import { IUser } from "@/store/auth/types";
+import { useAuthStore } from "@/store/auth/authStore";
 
 interface PostContentProps {
   post: Post;
   onDelete: () => void;
-  currentUser: IUser | null;
 }
 
-export function PostContent({ post, onDelete, currentUser }: PostContentProps) {
+export function PostContent({ post, onDelete }: PostContentProps) {
   const [isScrap, setIsScrap] = useState(false);
   const router = useRouter();
 
-  const isAuthor = currentUser && currentUser.uid === post.author?.id;
+  const user = useAuthStore();
+  const isAuthor = user.user?.uid === post.author?.id;
+  console.log(post.author);
 
   return (
     <div className="max-w-3xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 pb-8 border-b">
