@@ -8,7 +8,7 @@ import {
 } from "firebase/storage";
 import { NextResponse } from "next/server";
 
-// Function to upload an image and return its URL
+// 이미지 업로드
 const uploadImageAndGetURL = async (
   file: File,
   postId: string,
@@ -21,7 +21,7 @@ const uploadImageAndGetURL = async (
   return getDownloadURL(storageRef);
 };
 
-// GET: Fetch a single post
+// GET: 단일 게시글 조회 로직
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
@@ -31,8 +31,26 @@ export async function GET(
     const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const postData = docSnap.data();
-      console.log("Image URLs:", postData.images); // Log image URLs
-      return NextResponse.json({ id: docSnap.id, ...postData });
+
+      // 작성자 정보 가져오기
+      const authorRef = doc(db, "users", postData.authorId);
+      const authorSnap = await getDoc(authorRef);
+      const authorData = authorSnap.exists() ? authorSnap.data() : null;
+
+      const postWithAuthor = {
+        id: docSnap.id,
+        ...postData,
+        author: authorData
+          ? {
+              id: authorData.id,
+              nickname: authorData.nickname || "",
+              profileImg: authorData.profileImg || "",
+            }
+          : null,
+      };
+
+      console.log("Post with author data:", postWithAuthor);
+      return NextResponse.json(postWithAuthor);
     } else {
       return NextResponse.json(
         { error: "게시글을 찾을 수 없습니다." },
@@ -48,7 +66,7 @@ export async function GET(
   }
 }
 
-// PUT: Update a post
+// PUT: 게시글 수정 로직
 export async function PUT(
   request: Request,
   { params }: { params: { id: string } }
@@ -124,7 +142,7 @@ export async function PUT(
   }
 }
 
-// DELETE: Delete a post
+// DELETE: 게시글 삭제 로직
 export async function DELETE(
   request: Request,
   { params }: { params: { id: string } }

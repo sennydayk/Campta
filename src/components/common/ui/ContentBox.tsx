@@ -21,7 +21,7 @@ export default function ContentBox({
 }: ContentBoxProps) {
   return (
     <Link href={`/posts/${id}`} className="block">
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-hite rounded-lg shadow overflow-hidden">
         <div className="p-4 flex">
           <div className="w-24 h-24 bg-gray-200 rounded-md mr-4 overflow-hidden relative">
             {imageUrl ? (
