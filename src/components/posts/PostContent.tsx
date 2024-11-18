@@ -1,22 +1,35 @@
+"use client";
+
 import { useState } from "react";
 import { Bookmark, Trash2, Edit } from "lucide-react";
 import { Post } from "@/lib/posts/types";
 import { ImageSlider } from "./ImageSlider";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth/authStore";
+import { usePostMutations } from "@/lib/posts/hooks/usePostMutations";
 
 interface PostContentProps {
   post: Post;
-  onDelete: () => void;
 }
 
-export function PostContent({ post, onDelete }: PostContentProps) {
+export function PostContent({ post }: PostContentProps) {
   const [isScrap, setIsScrap] = useState(false);
   const router = useRouter();
+  const user = useAuthStore((state) => state.user);
+  const { deletePostMutation } = usePostMutations();
 
-  const user = useAuthStore();
-  const isAuthor = user.user?.uid === post.author?.id;
-  console.log(post.author);
+  const isAuthor = user?.uid === post.author?.id;
+
+  const handleDelete = async () => {
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      try {
+        await deletePostMutation.mutateAsync(post.id);
+        router.push("/");
+      } catch (error) {
+        console.error("게시물 삭제 실패:", error);
+      }
+    }
+  };
 
   return (
     <div className="max-w-3xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 pb-8 border-b">
@@ -29,7 +42,7 @@ export function PostContent({ post, onDelete }: PostContentProps) {
               <button onClick={() => router.push(`/posts/${post.id}/edit`)}>
                 <Edit className="h-6 w-6 text-gray-500" />
               </button>
-              <button onClick={onDelete} className="text-red-500">
+              <button onClick={handleDelete} className="text-red-500">
                 <Trash2 className="h-6 w-6" />
               </button>
             </>
