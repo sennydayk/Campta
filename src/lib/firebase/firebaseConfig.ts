@@ -34,18 +34,4 @@ setPersistence(auth, browserLocalPersistence)
     console.error("인증 상태 지속성 설정 중 오류 발생:", error);
   });
 
-// 디버깅을 위한 auth 상태 변경 리스너
-auth.onAuthStateChanged((user) => {
-  console.log("Auth state changed:", user ? user.uid : "No user");
-  console.log(user);
-  if (user) {
-    console.log("User is logged in:", user.uid);
-    user.getIdToken().then((token) => {
-      console.log("Token on sign-in:", token);
-    });
-  } else {
-    console.log("User is logged out.");
-  }
-});
-
 export { auth, db, storage };
