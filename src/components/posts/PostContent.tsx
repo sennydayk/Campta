@@ -35,15 +35,15 @@ export function PostContent({ post }: PostContentProps) {
     <div className="max-w-3xl mx-auto mt-8 px-4 sm:px-6 lg:px-8 pb-8 border-b">
       <ImageSlider images={post.images} />
       <div className="mt-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{post.title}</h1>
+        <h1 className="text-2xl font-bold mb-4">{post.title}</h1>
         <div className="flex items-center space-x-2">
           {isAuthor && (
             <>
               <button onClick={() => router.push(`/posts/${post.id}/edit`)}>
-                <Edit className="h-6 w-6 text-gray-500" />
+                <Edit className="h-6 w-6 text-gray-500 mr-2" />
               </button>
               <button onClick={handleDelete} className="text-red-500">
-                <Trash2 className="h-6 w-6" />
+                <Trash2 className="h-6 w-6 mr-2" />
               </button>
             </>
           )}

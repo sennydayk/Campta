@@ -18,14 +18,27 @@ export function ImageSlider({ images }: ImageSliderProps) {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="relative flex justify-center max-w-2xl mx-auto">
+    <div className="flex flex-col items-center mb-12">
+      <div
+        className="relative w-full max-w-lg mx-auto"
+        style={{
+          aspectRatio: "3 / 4",
+          overflow: "hidden",
+        }}
+      >
         <Image
-          src={images[currentImage]}
+          src={images[currentImage] || "/fallback-image.jpg"}
           alt="Post image"
-          width={300}
-          height={200}
-          className="w-80 rounded-lg"
+          fill
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
+          placeholder="blur"
+          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZ2YzZjNmIiAvPjwvc3ZnPg=="
+          priority={currentImage === 0}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="rounded-lg"
         />
         {images.length > 1 && (
           <>

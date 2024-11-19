@@ -24,7 +24,6 @@ export default function Comment({
   content,
   timestamp,
   depth = 0,
-  replies,
   uid,
   userProfile,
 }: CommentProps) {
@@ -176,7 +175,6 @@ export default function Comment({
           </div>
         </form>
       )}
-      {replies && replies.map((reply) => <Comment key={reply.id} {...reply} />)}
     </div>
   );
 }
