@@ -3,7 +3,12 @@
 import { useCallback, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
-export default function Modal({ children }: { children: React.ReactNode }) {
+interface ModalProps {
+  children: React.ReactNode;
+  detailPageUrl?: string;
+}
+
+export default function Modal({ children, detailPageUrl }: ModalProps) {
   const overlay = useRef<HTMLDivElement>(null);
   const wrapper = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -12,14 +17,26 @@ export default function Modal({ children }: { children: React.ReactNode }) {
     router.back();
   }, [router]);
 
-  const onClick = useCallback(
+  const onOverlayClick = useCallback(
     (e: React.MouseEvent) => {
-      if (e.target === overlay.current || e.target === wrapper.current) {
-        if (onDismiss) onDismiss();
+      if (e.target === overlay.current) {
+        onDismiss();
       }
     },
-    [onDismiss, overlay, wrapper]
+    [onDismiss, overlay]
   );
+
+  const onWrapperClick = useCallback(() => {
+    if (
+      detailPageUrl &&
+      typeof detailPageUrl === "string" &&
+      detailPageUrl.startsWith("/")
+    ) {
+      router.push(detailPageUrl);
+    } else {
+      console.warn("Invalid detailPageUrl provided to Modal component");
+    }
+  }, [router, detailPageUrl]);
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -29,25 +46,31 @@ export default function Modal({ children }: { children: React.ReactNode }) {
   );
 
   useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
     document.body.style.overflow = "hidden";
     document.addEventListener("keydown", onKeyDown);
+
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = originalStyle;
       document.removeEventListener("keydown", onKeyDown);
     };
   }, [onKeyDown]);
 
   return (
-    <div
-      ref={overlay}
-      className="fixed inset-0 bg-black/50 z-50"
-      onClick={onClick}
-    >
-      <div className="fixed inset-0 overflow-y-auto">
-        <div className="flex min-h-full items-center justify-center p-4">
+    <div className="fixed inset-0 z-50">
+      <div
+        ref={overlay}
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onOverlayClick}
+      >
+        <div className="flex min-h-screen items-center justify-center p-4">
           <div
             ref={wrapper}
-            className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-auto"
+            className={`bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-auto ${
+              detailPageUrl ? "cursor-pointer" : ""
+            }`}
+            data-scroll-container
+            onClick={detailPageUrl ? onWrapperClick : undefined}
           >
             {children}
           </div>
