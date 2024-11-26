@@ -31,5 +31,6 @@ export interface FormInputProps {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
+  error?: string | undefined;
   required?: boolean;
 }
