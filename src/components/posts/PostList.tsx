@@ -46,29 +46,34 @@ export default function PostList() {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data?.pages.flatMap((group) =>
-          group.map((post: Post) => (
-            <Link
-              key={post.id}
-              href={`/posts/${post.id}`}
-              scroll={false}
-              passHref
-              legacyBehavior
-            >
-              <ContentBox
-                key={post.id}
-                id={post.id}
-                title={post.title}
-                description={post.content}
-                comments={post.comments}
-                scraps={post.scraps}
-                imageUrl={
-                  post.images && post.images.length > 0
-                    ? post.images[0]
-                    : undefined
-                }
-              />
-            </Link>
-          ))
+          group.map(
+            (post: Post) => (
+              console.log("Post object:", post),
+              (
+                <Link
+                  key={post.id}
+                  href={`/posts/${post.id}`}
+                  scroll={false}
+                  passHref
+                  legacyBehavior
+                >
+                  <ContentBox
+                    key={post.id}
+                    id={post.id}
+                    title={post.title}
+                    description={post.content}
+                    comments={post.comments}
+                    scraps={post.scraps}
+                    imageUrl={
+                      post.images && post.images.length > 0
+                        ? post.images[0]
+                        : undefined
+                    }
+                  />
+                </Link>
+              )
+            )
+          )
         )}
       </div>
       <div

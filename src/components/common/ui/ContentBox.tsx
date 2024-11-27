@@ -22,7 +22,7 @@ const ContentBox = forwardRef(function ContentBox(
   ref: ForwardedRef<HTMLAnchorElement>
 ) {
   const truncatedTitle = truncateText(title, 15);
-  const truncatedDescription = truncateText(description, 60);
+  const truncatedDescription = truncateText(description, 50);
 
   return (
     <Link href={`/posts/${id}`} className="block no-underline" ref={ref}>

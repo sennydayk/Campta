@@ -1,13 +1,14 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import SearchBar from "./SearchBar";
 import { useAuthStore } from "@/store/auth/authStore";
 
 export default function Header() {
   const { isLogin, logout, checkLoginStatus } = useAuthStore();
   const [isClient, setIsClient] = useState(false);
+  const pathname = usePathname(); // 현재 경로 가져오기
 
   useEffect(() => {
     setIsClient(true);
@@ -29,7 +30,8 @@ export default function Header() {
         <Link href={"/"}>
           <h1 className="text-2xl font-bold text-font_main">CAMPTA</h1>
         </Link>
-        <SearchBar />
+        {pathname === "/" && <SearchBar />}{" "}
+        {/* "/" 경로에서만 SearchBar 표시 */}
         {isClient ? (
           isLogin ? (
             <button
