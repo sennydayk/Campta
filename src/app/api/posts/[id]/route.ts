@@ -6,7 +6,7 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 // 이미지 업로드
 const uploadImageAndGetURL = async (
@@ -23,7 +23,7 @@ const uploadImageAndGetURL = async (
 
 // GET: 단일 게시글 조회 로직
 export async function GET(
-  request: Request,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -68,7 +68,7 @@ export async function GET(
 
 // PUT: 게시글 수정 로직
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
@@ -144,7 +144,7 @@ export async function PUT(
 
 // DELETE: 게시글 삭제 로직
 export async function DELETE(
-  request: Request,
+  _request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {

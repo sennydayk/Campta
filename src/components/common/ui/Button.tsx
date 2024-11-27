@@ -25,7 +25,15 @@ export default function Button({
     <div>
       <button
         type={type}
-        className={`${width} flex justify-center py-2 px-4 shadow-sm ${rounded} ${fontSize} ${fontWeight} text-font_btn bg-main hover:bg-sub`}
+        className={`${width} flex justify-center py-2 px-4 shadow-sm ${rounded} ${fontSize} ${fontWeight} 
+        ${
+          disabled
+            ? "bg-gray-200 text-gray-500 cursor-not-allowed"
+            : "text-font_btn bg-main hover:bg-sub"
+        }
+        transition-colors
+        duration-200
+      `}
         onClick={onClick}
         disabled={disabled}
       >

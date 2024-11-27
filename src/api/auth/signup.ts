@@ -14,9 +14,21 @@ export async function registerUser(
     body: JSON.stringify(userData),
   });
 
+  const data = await response.json();
+
   if (!response.ok) {
-    throw new Error("Registration failed");
+    throw new Error(data.error || "회원가입에 실패했습니다.");
   }
 
-  return response.json();
+  return data;
+}
+
+export async function checkNicknameAvailability(
+  nickname: string
+): Promise<boolean> {
+  const response = await fetch(
+    `/api/auth/signup/nicknameCheck?nickname=${encodeURIComponent(nickname)}`
+  );
+  const data = await response.json();
+  return data.available;
 }
