@@ -22,10 +22,7 @@ const uploadImageAndGetURL = async (
 };
 
 // GET: 단일 게시글 조회 로직
-export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET({ params }: { params: { id: string } }) {
   try {
     const docRef = doc(db, "posts", params.id);
     const docSnap = await getDoc(docRef);
@@ -143,10 +140,7 @@ export async function PUT(
 }
 
 // DELETE: 게시글 삭제 로직
-export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE({ params }: { params: { id: string } }) {
   try {
     const docRef = doc(db, "posts", params.id);
     const docSnap = await getDoc(docRef);
