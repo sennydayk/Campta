@@ -16,6 +16,7 @@ import {
   passwordSchema,
   signupSchema,
 } from "../../lib/auth/signup/validationSchemas";
+import { RegisterResponse } from "@/lib/auth/signup/types";
 
 export default function SignupForm() {
   const [formData, setFormData] = useState<SignupFormData>({
@@ -40,7 +41,7 @@ export default function SignupForm() {
   const router = useRouter();
   const { setUser } = useAuthStore();
 
-  const mutation = useMutation<any, Error, SignupFormData>({
+  const mutation = useMutation<RegisterResponse, Error, SignupFormData>({
     mutationFn: registerUser,
     onSuccess: (data) => {
       setUser(data.user);
@@ -93,7 +94,7 @@ export default function SignupForm() {
           await passwordSchema.parseAsync(formData[field]);
         }
         setErrors((prev) => ({ ...prev, [field]: undefined }));
-      } catch (error) {
+      } catch (error: any) {
         if (error instanceof z.ZodError) {
           // ZodError 처리
           setErrors((prev) => ({ ...prev, [field]: error.errors[0].message }));
