@@ -93,11 +93,20 @@ export default function SignupForm() {
           await passwordSchema.parseAsync(formData[field]);
         }
         setErrors((prev) => ({ ...prev, [field]: undefined }));
-      } catch (error: any) {
+      } catch (error) {
         if (error instanceof z.ZodError) {
+          // ZodError 처리
           setErrors((prev) => ({ ...prev, [field]: error.errors[0].message }));
+        } else if (error instanceof Error) {
+          // 일반적인 Error 처리
+          console.error("Unexpected error during validation:", error.message);
+          setErrors((prev) => ({
+            ...prev,
+            [field]: "알 수 없는 오류가 발생했습니다.",
+          }));
         } else {
-          console.error("Unexpected error during validation:", error);
+          // 예상치 못한 오류 처리
+          console.error("Unknown error type:", error);
           setErrors((prev) => ({
             ...prev,
             [field]: "알 수 없는 오류가 발생했습니다.",
