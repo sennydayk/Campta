@@ -26,12 +26,12 @@ export default function Comment({
   depth = 0,
   uid,
   userProfile,
-}: CommentProps) {
+  replies = [],
+}: CommentProps & { replies?: CommentProps[] }) {
   const [isReplying, setIsReplying] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [editContent, setEditContent] = useState(content);
-
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
 
@@ -75,6 +75,7 @@ export default function Comment({
           nickname: user.nickname || "알 수 없는 사용자",
           profileImg: user.profileImg || "/images/user.png",
         },
+        parentId: id,
       });
     }
   };
@@ -89,6 +90,8 @@ export default function Comment({
       deleteCommentMutation.mutate(id);
     }
   };
+
+  const isAuthor = user?.uid === uid;
 
   return (
     <div
@@ -115,17 +118,18 @@ export default function Comment({
       </div>
       {isEditing ? (
         <form onSubmit={handleEditSubmit} className="mt-2">
-          <input
-            type="text"
-            value={editContent}
-            onChange={(e) => setEditContent(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-main"
-          />
-          <div className="mt-2 space-x-2">
-            <Button type="submit" label="수정하기" />
+          <div className="flex items-center space-x-2">
+            <input
+              type="text"
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-main"
+            />
+            <Button type="submit" label="수정" width="w-20" />
             <Button
               type="button"
               label="취소"
+              width="w-20"
               onClick={() => setIsEditing(false)}
             />
           </div>
@@ -133,7 +137,7 @@ export default function Comment({
       ) : (
         <p className="mt-1">{content}</p>
       )}
-      {!isEditing && user && (
+      {user && (
         <div className="mt-1 space-x-2">
           {(depth === 0 || depth === undefined) && (
             <button
@@ -143,7 +147,7 @@ export default function Comment({
               답글 쓰기
             </button>
           )}
-          {user.uid === uid && (
+          {isAuthor && (
             <>
               <button
                 className="text-sm text-font_sub hover:text-main"
@@ -175,6 +179,9 @@ export default function Comment({
           </div>
         </form>
       )}
+      {replies.map((reply) => (
+        <Comment key={reply.id} {...reply} />
+      ))}
     </div>
   );
 }

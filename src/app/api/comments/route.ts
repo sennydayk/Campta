@@ -58,7 +58,7 @@ export async function GET(request: NextRequest) {
     let q = query(
       commentsRef,
       where("postId", "==", postId),
-      orderBy("timestamp", "desc"),
+      orderBy("timestamp"),
       limit(pageSize + 1) // 다음 페이지 존재 여부를 확인하기 위해 1개 더 가져옵니다.
     );
 

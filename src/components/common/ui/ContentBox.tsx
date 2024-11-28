@@ -21,7 +21,7 @@ const ContentBox = forwardRef(function ContentBox(
   { id, title, description, scraps, comments, imageUrl }: ContentBoxProps,
   ref: ForwardedRef<HTMLAnchorElement>
 ) {
-  const truncatedTitle = truncateText(title, 15);
+  const truncatedTitle = truncateText(title, 10);
   const truncatedDescription = truncateText(description, 50);
 
   return (

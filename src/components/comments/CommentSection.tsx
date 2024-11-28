@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   useInfiniteQuery,
   useMutation,
@@ -12,7 +12,6 @@ import Comment from "@/components/comments/Comment";
 import { CommentProps, UserProfile } from "@/lib/comments/types";
 import { useAuthStore } from "@/store/auth/authStore";
 import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
 
 interface CommentApiResponse {
   comments: CommentProps[];
@@ -25,6 +24,29 @@ interface CommentSectionProps {
 }
 
 const COMMENTS_PER_PAGE = 10;
+
+// Helper function to nest comments
+function nestComments(comments: CommentProps[]) {
+  const commentMap: {
+    [key: string]: CommentProps & { replies: CommentProps[] };
+  } = {};
+
+  comments.forEach((comment) => {
+    commentMap[comment.id] = { ...comment, replies: [] };
+  });
+
+  const nestedComments: (CommentProps & { replies: CommentProps[] })[] = [];
+
+  comments.forEach((comment) => {
+    if (comment.depth > 0 && comment.parentId) {
+      commentMap[comment.parentId]?.replies.push(comment);
+    } else {
+      nestedComments.push(commentMap[comment.id]);
+    }
+  });
+
+  return nestedComments;
+}
 
 export function CommentSection({ postId }: CommentSectionProps) {
   const [newComment, setNewComment] = useState("");
@@ -79,18 +101,19 @@ export function CommentSection({ postId }: CommentSectionProps) {
   if (status === "error") return <div>댓글을 불러오는데 실패했습니다.</div>;
 
   const comments = data?.pages.flatMap((page) => page.comments) || [];
+  const nestedComments = nestComments(comments);
 
   return (
     <div className="max-w-3xl mx-auto mt-8 px-4 sm:px-6 lg:px-8">
       <h2 className="text-xl font-semibold mb-4">댓글</h2>
-      {comments.map((comment) => (
+      {nestedComments.map((comment) => (
         <Comment key={comment.id} {...comment} />
       ))}
       <div className="mt-8 text-xs font-semibold text-font_sub">
         {isFetchingNextPage ? (
           <p>더 많은 댓글을 불러오는 중...</p>
         ) : hasNextPage ? (
-          <div ref={ref} className="h-10" /> // Intersection observer를 위한 보이지 않는 요소
+          <div ref={ref} className="h-10" />
         ) : (
           <p>모든 댓글을 불러왔습니다.</p>
         )}

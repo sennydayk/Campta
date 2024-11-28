@@ -19,7 +19,12 @@ export function PostForm({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(title, content, images, keepImages);
+    const action = initialTitle ? "수정" : "작성";
+    const confirmMessage = `게시글을 ${action}하시겠습니까?`;
+
+    if (window.confirm(confirmMessage)) {
+      onSubmit(title, content, images, keepImages);
+    }
   };
 
   const handleRemoveImage = (index: number, isKeepImage: boolean) => {
