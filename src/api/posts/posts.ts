@@ -1,8 +1,10 @@
 import { Post } from "@/lib/posts/types";
 import { useAuthStore } from "@/store/auth/authStore";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 export async function fetchPost(id: string): Promise<Post> {
-  const response = await fetch(`http://localhost:3000/api/posts/${id}`);
+  const response = await fetch(`${API_URL}/api/posts/${id}`);
   if (!response.ok) {
     throw new Error("게시글을 불러오는데 실패했습니다.");
   }
