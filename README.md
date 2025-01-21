@@ -346,13 +346,13 @@ npm start: 프로덕션 환경에서 서버 시작
 <br>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
-  <img width="500" alt="캠타-글작성" src="https://github.com/user-attachments/assets/f3757d89-eff7-4455-b153-322aa3363c7b" />
-  <img width="500" alt="캠타-글작성2" src="https://github.com/user-attachments/assets/a3391078-5c5c-441c-857a-01f7c33812af" />
+  <img width="450" alt="캠타-글작성" src="https://github.com/user-attachments/assets/f3757d89-eff7-4455-b153-322aa3363c7b" />
+  <img width="450" alt="캠타-글작성2" src="https://github.com/user-attachments/assets/a3391078-5c5c-441c-857a-01f7c33812af" />
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
-  <img width="500" alt="캠타-글작성" src="https://github.com/user-attachments/assets/6c56c6fd-6f53-4e91-80ad-576e3d1f7af0" />
-  <img width="500" alt="캠타-글작성2" src="https://github.com/user-attachments/assets/99ee72aa-aef4-487e-bb67-8c3e0cfdcb7e" />
+  <img width="450" alt="캠타-글작성" src="https://github.com/user-attachments/assets/6c56c6fd-6f53-4e91-80ad-576e3d1f7af0" />
+  <img width="450" alt="캠타-글작성2" src="https://github.com/user-attachments/assets/99ee72aa-aef4-487e-bb67-8c3e0cfdcb7e" />
 </div>
 
 
@@ -367,14 +367,14 @@ npm start: 프로덕션 환경에서 서버 시작
 <br>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
-  <img width="300" alt="캠타-글상세" src="https://github.com/user-attachments/assets/b73a7c65-0450-4985-8fd5-16244bf376f0" />
-  <img width="300" alt="캠타-글상세2" src="https://github.com/user-attachments/assets/b816a461-a156-4f26-a657-23c949d64ed7" />
-  <img width="300" alt="캠타-글상세3" src="https://github.com/user-attachments/assets/a6b88423-3d96-49b6-9f33-1847a60e2e00" />
+  <img width="280" alt="캠타-글상세" src="https://github.com/user-attachments/assets/b73a7c65-0450-4985-8fd5-16244bf376f0" />
+  <img width="280" alt="캠타-글상세2" src="https://github.com/user-attachments/assets/b816a461-a156-4f26-a657-23c949d64ed7" />
+  <img width="280" alt="캠타-글상세3" src="https://github.com/user-attachments/assets/a6b88423-3d96-49b6-9f33-1847a60e2e00" />
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
-  <img width="460" alt="대댓글작성" src="https://github.com/user-attachments/assets/9a221cbd-83a0-4a09-8b28-1c9c6c901872" />
-  <img width="460" alt="대댓글수정" src="https://github.com/user-attachments/assets/cd57b149-31a7-4ef9-a0d5-0583d7c23d7a" />
+  <img width="400" alt="대댓글작성" src="https://github.com/user-attachments/assets/9a221cbd-83a0-4a09-8b28-1c9c6c901872" />
+  <img width="400" alt="대댓글수정" src="https://github.com/user-attachments/assets/cd57b149-31a7-4ef9-a0d5-0583d7c23d7a" />
 </div>
 
 <br>
