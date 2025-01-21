@@ -351,8 +351,8 @@ npm start: 프로덕션 환경에서 서버 시작
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
-  <img width="450" alt="캠타-글작성" src="https://github.com/user-attachments/assets/6c56c6fd-6f53-4e91-80ad-576e3d1f7af0" />
-  <img width="450" alt="캠타-글작성2" src="https://github.com/user-attachments/assets/99ee72aa-aef4-487e-bb67-8c3e0cfdcb7e" />
+  <img width="800" alt="캠타-글작성" src="https://github.com/user-attachments/assets/6c56c6fd-6f53-4e91-80ad-576e3d1f7af0" />
+  <img width="800" alt="캠타-글작성2" src="https://github.com/user-attachments/assets/99ee72aa-aef4-487e-bb67-8c3e0cfdcb7e" />
 </div>
 
 
@@ -373,8 +373,8 @@ npm start: 프로덕션 환경에서 서버 시작
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
-  <img width="400" alt="대댓글작성" src="https://github.com/user-attachments/assets/9a221cbd-83a0-4a09-8b28-1c9c6c901872" />
-  <img width="400" alt="대댓글수정" src="https://github.com/user-attachments/assets/cd57b149-31a7-4ef9-a0d5-0583d7c23d7a" />
+  <img width="800" alt="대댓글작성" src="https://github.com/user-attachments/assets/9a221cbd-83a0-4a09-8b28-1c9c6c901872" />
+  <img width="800" alt="대댓글수정" src="https://github.com/user-attachments/assets/cd57b149-31a7-4ef9-a0d5-0583d7c23d7a" />
 </div>
 
 <br>
