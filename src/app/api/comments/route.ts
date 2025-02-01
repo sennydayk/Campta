@@ -59,10 +59,9 @@ export async function GET(request: NextRequest) {
       commentsRef,
       where("postId", "==", postId),
       orderBy("timestamp", "desc"),
-      limit(pageSize + 1) // 다음 페이지 존재 여부를 확인하기 위해 1개 더 가져옵니다.
+      limit(pageSize + 1)
     );
 
-    // 첫 페이지가 아닌 경우, 시작점을 설정합니다.
     if (page > 0) {
       const lastVisibleSnapshot = await getLastVisibleSnapshot(
         postId,
