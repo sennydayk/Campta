@@ -367,9 +367,9 @@ npm start: 프로덕션 환경에서 서버 시작
 <br>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
-  <img width="280" alt="캠타-글상세" src="https://github.com/user-attachments/assets/b73a7c65-0450-4985-8fd5-16244bf376f0" />
-  <img width="280" alt="캠타-글상세2" src="https://github.com/user-attachments/assets/b816a461-a156-4f26-a657-23c949d64ed7" />
-  <img width="280" alt="캠타-글상세3" src="https://github.com/user-attachments/assets/a6b88423-3d96-49b6-9f33-1847a60e2e00" />
+  <img width="250" alt="캠타-글상세" src="https://github.com/user-attachments/assets/b73a7c65-0450-4985-8fd5-16244bf376f0" />
+  <img width="250" alt="캠타-글상세2" src="https://github.com/user-attachments/assets/b816a461-a156-4f26-a657-23c949d64ed7" />
+  <img width="250" alt="캠타-글상세3" src="https://github.com/user-attachments/assets/a6b88423-3d96-49b6-9f33-1847a60e2e00" />
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
