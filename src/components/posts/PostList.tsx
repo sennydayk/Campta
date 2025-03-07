@@ -10,8 +10,10 @@ import { fetchPosts, POSTS_PER_PAGE } from "@/lib/api";
 import { Post } from "@/lib/posts/types";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useAuthStore } from "@/store/auth/authStore";
 
 export default function PostList() {
+  const { isLogin } = useAuthStore();
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: false,
@@ -84,7 +86,7 @@ export default function PostList() {
         )}
       </div>
       <Footer />
-      <WriteButton />
+      {isLogin && <WriteButton />}
     </>
   );
 }
