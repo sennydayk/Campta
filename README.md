@@ -1,5 +1,5 @@
 # CAMPTA
-> **캠핑용품 중고거래 서비스를 제공하는 웹서비스 프로젝트** <br/> **개발기간 : 2024.10.16 ~ 2024.11.20** <br/> **개발인원 : 1명(본인)
+> **캠핑용품 중고거래 서비스를 제공하는 웹서비스 프로젝트** <br/> **개발기간 : 2024.10.16 ~ 2024.11.20** <br/> **개발인원 : 1명(본인)**
 
 <br>
 
@@ -12,7 +12,7 @@
 ## 1. 프로젝트 소개
 
 Campta는 캠핑 애호가들이 경험과 노하우를 공유할 수 있는 소셜 네트워킹 서비스입니다. 사용자들은 자유롭게 이미지를 업로드하고 댓글을 통해 소통하며 커뮤니티를 이용할 수 있습니다.
-Next.js 프레임워크와 firebase를 활용하였으며, 선택적 SSR 도입과 이미지 최적화를 통해성능을 개선했다는 점이 특징입니다. 또한 체계적인 폴더 구조와 통일된 컨벤션으로 유지보수가 용이한 개발 환경을 구축했습니다.
+Next.js 프레임워크와 firebase를 활용하였으며, 선택적 SSR 도입과 이미지 최적화를 통해 성능을 개선했다는 점이 특징입니다. 또한 체계적인 폴더 구조와 통일된 컨벤션으로 유지보수가 용이한 개발 환경을 구축했습니다.
 
 <br>
 
@@ -367,9 +367,9 @@ npm start: 프로덕션 환경에서 서버 시작
 <br>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
-  <img width="280" alt="캠타-글상세" src="https://github.com/user-attachments/assets/b73a7c65-0450-4985-8fd5-16244bf376f0" />
-  <img width="280" alt="캠타-글상세2" src="https://github.com/user-attachments/assets/b816a461-a156-4f26-a657-23c949d64ed7" />
-  <img width="280" alt="캠타-글상세3" src="https://github.com/user-attachments/assets/a6b88423-3d96-49b6-9f33-1847a60e2e00" />
+  <img width="250" alt="캠타-글상세" src="https://github.com/user-attachments/assets/b73a7c65-0450-4985-8fd5-16244bf376f0" />
+  <img width="250" alt="캠타-글상세2" src="https://github.com/user-attachments/assets/b816a461-a156-4f26-a657-23c949d64ed7" />
+  <img width="250" alt="캠타-글상세3" src="https://github.com/user-attachments/assets/a6b88423-3d96-49b6-9f33-1847a60e2e00" />
 </div>
 
 <div style="display: flex; justify-content: center; gap: 10px; align-items: center;">
